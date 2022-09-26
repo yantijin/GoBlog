@@ -13,4 +13,5 @@ type User struct {
 	Password string    `gorm:"comment:用户登录密码" json:"-"`
 	NickName string    `gorm:"default:系统用户;comment:用户昵称" json:"nickName"`
 	Email    string    `gorm:"comment:用户邮箱" json:"email"`
+	Avatar   string    `gorm:"comment:头像;default:https://avatars.githubusercontent.com/u/28244675?s=400&u=cb7f41621699813e9a352e8974e7c32dc4ba9220&v=4"`
 }
