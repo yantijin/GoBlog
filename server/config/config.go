@@ -4,4 +4,5 @@ package config
 type Server struct {
 	Zap Zap     `mapstructure:"zap" json:"zap" yaml:"zap"`
 	Db  CommeDB `mapstructure:"db" json:"db" yaml:"db"`
+	JWT JWT     `mapstructure:"jwt" json:"jwt" yaml:"jwt"`
 }
