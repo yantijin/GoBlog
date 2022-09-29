@@ -6,7 +6,7 @@ package config
 type CommeDB struct {
 	UserName string `json:"username" yaml:"username" mapstructure:"username"`
 	Password string `json:"password" yaml:"password" mapstructure:"password"`
-	DdName   string `json:"dbname" yaml:"dbname" mapstructure:"dbname"`
+	DbName   string `json:"dbname" yaml:"dbname" mapstructure:"dbname"`
 	Port     string `json:"port" yaml:"port" mapstructure:"port"`
 	Path     string `json:"path" yaml:"path" mapstructure:"path"`
 	Config   string `json:"config" yaml:"config" mapstructure:"config"` // 例如charset=xxx&parseTime=xxxx&loc=xxx

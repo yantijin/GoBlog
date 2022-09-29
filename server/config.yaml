@@ -1,0 +1,21 @@
+db:
+  username: root
+  password: 1221ytj1122
+  dbname: golog
+  port: 3306
+  path: 127.0.0.1
+  config: charset=utf8mb4&parseTime=True&loc=Local
+  max-idle-conns: 10
+  max-open-conns: 100
+
+jwt:
+  signing-key: golog
+  expires-time: 7d
+  issuer: golog
+
+zap:
+  level: info
+  encode-level: LowercaseColorLevelEncoder
+  format: console
+  log-in-console: true
+  directory: log

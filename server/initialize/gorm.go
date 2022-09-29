@@ -12,11 +12,11 @@ import (
 // 初始化数据库,主要创建连接，并根据数据初始化表格的tables
 func InitializeDb() *gorm.DB {
 	m := commen.GVA_CONFIG.Db
-	if m.DdName == "" {
+	if m.DbName == "" {
 		return nil
 	}
 	db, err := gorm.Open(mysql.New(mysql.Config{
-		DSN:               m.UserName + ":" + m.Password + "@tcp(" + m.Path + ":" + m.Port + ")/" + m.DdName + m.Config,
+		DSN:               m.UserName + ":" + m.Password + "@tcp(" + m.Path + ":" + m.Port + ")/" + m.DbName + "?" + m.Config,
 		DefaultStringSize: 190, // string类型字段的默认长度
 	}), &gorm.Config{})
 	if err != nil {
