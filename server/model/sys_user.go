@@ -34,3 +34,9 @@ type ChangePassword struct {
 	Password    string `json:"password"`
 	NewPassword string `json:"newPassword"`
 }
+
+type LogInUserResponse struct {
+	User      User   `json:"user"`
+	Token     string `json:"token"`
+	ExpiresAt int64  `json:"expiresAt"`
+}

@@ -54,7 +54,7 @@ func (us *UserService) LogInUser(u *model.User) (ru *model.User, err error) {
 // 修改密码
 func (us *UserService) ChangePwd(u *model.User, newPwd string) (ru *model.User, err error) {
 	var user model.User
-	err = utils.NewSqlCnd().Where("username=?", u.UserName).FindOne(commen.GVA_DB, &user)
+	err = utils.NewSqlCnd().Where("username=?", u.ID).FindOne(commen.GVA_DB, &user)
 	if err == nil {
 		// 校验原来的密码是对的
 		if ok := utils.CheckPwd(u.Password, user.Password); !ok {
