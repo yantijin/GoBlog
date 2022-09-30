@@ -15,14 +15,20 @@ import (
 type UserController struct{}
 
 func (u *UserController) PostSignUp(c *gin.Context) {
-	var user model.User
+	var user model.RegisterUser
 	err := c.ShouldBindJSON(&user)
 	if err != nil {
 		commen.FailedWithMsg(err.Error(), c)
 	}
-
 	// 绑定成功后,调用注册服务
-	regUserInfo, err := service.AllServiceApp.UserService.RegisterUser(user)
+	ruser := model.User{
+		UserName: user.UserName,
+		Password: user.Password,
+		NickName: user.NickName,
+		Email:    user.Email,
+		Avatar:   user.Avatar,
+	}
+	regUserInfo, err := service.AllServiceApp.UserService.RegisterUser(ruser)
 	if err != nil {
 		commen.GVA_LOG.Error("注册失败", zap.Error(err))
 		commen.FailedWithDetailed(regUserInfo, "注册失败", c)
@@ -32,14 +38,18 @@ func (u *UserController) PostSignUp(c *gin.Context) {
 }
 
 func (u *UserController) PostLogIn(c *gin.Context) {
-	var user model.User
+	var user model.LogInUser
 	err := c.ShouldBindJSON(&user)
 	if err != nil {
 		commen.FailedWithMsg(err.Error(), c)
 	}
 
 	// 绑定成功后,调用登录服务
-	loginUser, err := service.AllServiceApp.UserService.LogInUser(&user)
+	ruser := model.User{
+		UserName: user.UserName,
+		Password: user.Password,
+	}
+	loginUser, err := service.AllServiceApp.UserService.LogInUser(&ruser)
 	if err != nil {
 		commen.GVA_LOG.Error("登录失败", zap.Error(err))
 		commen.FailedWithDetailed(loginUser, "登录失败", c)

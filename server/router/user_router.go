@@ -10,7 +10,7 @@ type UserRouter struct{}
 
 // 用户相关路由注册
 func (u *UserRouter) InitUserRouter(router gin.RouterGroup) {
-	userRouter := router.Group("user")
+	userRouter := router.Group("/user")
 
 	userRouter.POST("/signup", controller.AllControllerGroup.PostSignUp)
 	userRouter.POST("/signin", controller.AllControllerGroup.PostLogIn)

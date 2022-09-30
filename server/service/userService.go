@@ -19,7 +19,7 @@ type UserService struct{}
 func (us *UserService) RegisterUser(u model.User) (ru model.User, err error) {
 	// 首先查询用户名是否已经注册
 	var user model.User
-	if errors.Is(utils.NewSqlCnd().Where("username=?", u.UserName).FindOne(commen.GVA_DB, &user), gorm.ErrRecordNotFound) {
+	if !errors.Is(utils.NewSqlCnd().Where("username=?", u.UserName).FindOne(commen.GVA_DB, &user), gorm.ErrRecordNotFound) {
 		return ru, errors.New("用户名已注册，请更改")
 	}
 	// 将password进行编码保存,并创建唯一标识符
@@ -46,7 +46,7 @@ func (us *UserService) LogInUser(u *model.User) (ru *model.User, err error) {
 			return nil, fmt.Errorf("密码错误,请检查")
 		}
 		commen.GVA_LOG.Info("校验通过,用户登录")
-		return nil, nil
+		return &user, nil
 	}
 	return &user, err
 }
@@ -54,7 +54,7 @@ func (us *UserService) LogInUser(u *model.User) (ru *model.User, err error) {
 // 修改密码
 func (us *UserService) ChangePwd(u *model.User, newPwd string) (ru *model.User, err error) {
 	var user model.User
-	err = utils.NewSqlCnd().Where("username=?", u.ID).FindOne(commen.GVA_DB, &user)
+	err = utils.NewSqlCnd().Where("ID=?", u.ID).FindOne(commen.GVA_DB, &user)
 	if err == nil {
 		// 校验原来的密码是对的
 		if ok := utils.CheckPwd(u.Password, user.Password); !ok {

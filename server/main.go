@@ -20,5 +20,7 @@ func main() {
 		db, _ := commen.GVA_DB.DB()
 		defer db.Close()
 	}
+	// 开启服务
+	core.RunServer()
 
 }
