@@ -61,7 +61,10 @@ func (us *UserService) ChangePwd(u *model.User, newPwd string) (ru *model.User, 
 			return nil, fmt.Errorf("原密码错误")
 		}
 		// 校验通过,对密码进行修改
-		user.Password = newPwd
+		user.Password, err = utils.GetHashPwd(newPwd)
+		if err != nil {
+			return nil, fmt.Errorf("对新密码编码错误，请重试")
+		}
 		commen.GVA_DB.Save(&user)
 		return &user, nil
 	}
