@@ -14,7 +14,7 @@ type CustomClaims struct {
 
 type BaseClaims struct {
 	UUID     uuid.UUID
-	ID       uint
+	ID       int64
 	UserName string
 	NickName string
 }

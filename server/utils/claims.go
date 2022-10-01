@@ -21,7 +21,7 @@ func GetClaims(c *gin.Context) (*model.CustomClaims, error) {
 }
 
 // 从前端请求,解析出claims对应的ID;claims可以直接获取或从token中解析出来
-func GetUserID(c *gin.Context) uint {
+func GetUserID(c *gin.Context) int64 {
 	if cl, exists := c.Get("claims"); !exists {
 		if claims, ok := GetClaims(c); ok != nil {
 			return 0
