@@ -35,6 +35,9 @@ func InitializeDb() *gorm.DB {
 func MigrateTables(db *gorm.DB) {
 	err := db.AutoMigrate(
 		model.User{},
+		model.Article{},
+		model.UserLike{},
+		model.Comments{},
 	)
 	if err != nil {
 		commen.GVA_LOG.Error("注册表格失败！", zap.Error(err))
