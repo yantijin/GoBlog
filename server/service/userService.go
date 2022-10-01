@@ -80,3 +80,9 @@ func (us *UserService) DelUser(id int) (err error) {
 	}
 	return nil
 }
+
+// 修改用户信息
+func (us *UserService) ChangeUserInfo(u model.User) error {
+	err := commen.GVA_DB.Updates(u).Error
+	return err
+}
