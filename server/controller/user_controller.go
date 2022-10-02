@@ -57,7 +57,6 @@ func (u *UserController) PostLogIn(c *gin.Context) {
 	}
 	// 登录成功之后,签发JWT
 	u.GetToken(c, *loginUser)
-	return
 }
 
 func (u *UserController) GetToken(c *gin.Context, user model.User) {
@@ -80,7 +79,6 @@ func (u *UserController) GetToken(c *gin.Context, user model.User) {
 		Token:     token,
 		ExpiresAt: claims.StandardClaims.ExpiresAt * 1000,
 	}, "设置登录状态成功", c)
-	return
 }
 
 func (u *UserController) ChangePwd(c *gin.Context) {
