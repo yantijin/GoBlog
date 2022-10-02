@@ -86,3 +86,13 @@ func (us *UserService) ChangeUserInfo(u model.User) error {
 	err := commen.GVA_DB.Updates(u).Error
 	return err
 }
+
+// 查找用户信息
+func (us *UserService) FindUser(id int64) (*model.User, error) {
+	var user model.User
+	err := commen.GVA_DB.Where("id=?", id).First(&user).Error
+	if err != nil {
+		return nil, err
+	}
+	return &user, err
+}

@@ -27,3 +27,23 @@ type UserLike struct {
 	EntityType string `gorm:"not null;default:article" json:"entityType"`      // 喜欢的的主体：文章 / 用户评论
 	EntityId   int64  `gorm:"not null;index:commen_entity_id" json:"entityId"` // 喜欢的主体的ID,如article ID/ comment ID
 }
+
+// 响应时，尽量不要把全部的article信息返回，也可以加上其他信息，比如user，tags等等
+type ArticleResponse struct {
+	ArticleId  int64     `json:"articleId"`
+	Title      string    `json:"title"`
+	Content    string    `json:"content"` // 此时已全部转化为html的格式
+	ViewCount  int64     `json:"viewCount"`
+	CreateTime int64     `json:"createTime"`
+	UserInfo   *UserInfo `json:"user"`
+	LikeCount  int64     `json:"likeCount"`
+}
+
+type ArticleRequest struct {
+	UserId      int64  `josn:"userId"`
+	Title       string `json:"title"`
+	Content     string `json:"content"`
+	ContentType string `json:"ContentType"`
+	// ViewCount   int64  `json:"viewCount"`
+	// LikeCount   int64  `json:"lieCount"`
+}

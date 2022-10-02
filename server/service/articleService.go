@@ -35,3 +35,8 @@ func (as *ArticleService) DelArtilce(id int64) error {
 func (as *ArticleService) UpdateColumn(db *gorm.DB, id int64, name string, value interface{}) error {
 	return db.Model(&model.Article{}).Where("id=?", id).UpdateColumn(name, value).Error
 }
+
+// 对浏览量+1
+func (as *ArticleService) PlusViewCount(articleId int64) error {
+	return as.UpdateColumn(commen.GVA_DB, articleId, "view_count", gorm.Expr("view_count + 1"))
+}

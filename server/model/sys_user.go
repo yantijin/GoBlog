@@ -40,3 +40,11 @@ type LogInUserResponse struct {
 	Token     string `json:"token"`
 	ExpiresAt int64  `json:"expiresAt"`
 }
+
+// 响应时的给前端的用户信息
+type UserInfo struct {
+	ID         int64  `json:"id"`
+	NickName   string `json:"nickname"`
+	Avatar     string `json:"avatar"`
+	CreateTime int64  `json:"createTime"`
+}
