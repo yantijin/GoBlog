@@ -3,16 +3,17 @@ module GoLog
 go 1.17
 
 require (
+	github.com/88250/lute v1.7.4
+	github.com/PuerkitoBio/goquery v1.8.0
 	github.com/fsnotify/fsnotify v1.5.4
 	github.com/gin-gonic/gin v1.8.1
+	github.com/microcosm-cc/bluemonday v1.0.20
 	github.com/spf13/viper v1.13.0
 	go.uber.org/zap v1.23.0
 	gorm.io/gorm v1.23.10
 )
 
 require (
-	github.com/88250/lute v1.7.4 // indirect
-	github.com/PuerkitoBio/goquery v1.8.0 // indirect
 	github.com/alecthomas/chroma v0.10.0 // indirect
 	github.com/andybalholm/cascadia v1.3.1 // indirect
 	github.com/aymerick/douceur v0.2.0 // indirect
@@ -29,7 +30,6 @@ require (
 	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/magiconair/properties v1.8.6 // indirect
 	github.com/mattn/go-isatty v0.0.16 // indirect
-	github.com/microcosm-cc/bluemonday v1.0.20 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
