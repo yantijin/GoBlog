@@ -6,6 +6,7 @@ import (
 	"GoLog/render"
 	"GoLog/service"
 	"GoLog/utils"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
@@ -14,7 +15,19 @@ import (
 type ArticleController struct{}
 
 //获取文章，这里不需要登录，也不需要检查用户登录状态
-func (ac *ArticleController) GetArticle(c *gin.Context, id int64) {
+func (ac *ArticleController) GetArticle(c *gin.Context) {
+	s_id, status := c.GetQuery("id")
+	if !status {
+		commen.GVA_LOG.Error("未解析到文章id参数，请检查")
+		commen.FailedWithMsg("未解析到文章id参数，请检查", c)
+		return
+	}
+	// 类型转换
+	id, err := strconv.ParseInt(s_id, 10, 64)
+	if err != nil {
+		commen.GVA_LOG.Error("文章id为非整数值，请检查！")
+		commen.FailedWithMsg("文章id为非整数值，请检查！", c)
+	}
 	article, err := service.AllServiceApp.FindArticle(id)
 	if err != nil {
 		commen.GVA_LOG.Error("获取文章错误，请检查", zap.Error(err))
@@ -60,8 +73,20 @@ func (ac *ArticleController) PostPublishArticle(c *gin.Context) {
 }
 
 // 编辑文章分两步，首先确定用户id和article id，然后获取文章内容，之后再给前端得到对应的数据
-func (ac *ArticleController) GetEditArticle(c *gin.Context, articleId int64) {
+func (ac *ArticleController) GetEditArticle(c *gin.Context) {
 	// 首先得到用户的ID
+	s_id, status := c.GetQuery("articleId")
+	if !status {
+		commen.GVA_LOG.Error("未解析到文章id参数，请检查")
+		commen.FailedWithMsg("未解析到文章id参数，请检查", c)
+		return
+	}
+	// 类型转换
+	articleId, err := strconv.ParseInt(s_id, 10, 64)
+	if err != nil {
+		commen.GVA_LOG.Error("文章id为非整数值，请检查！")
+		commen.FailedWithMsg("文章id为非整数值，请检查！", c)
+	}
 	userId := utils.GetUserID(c)
 	// 根据articleId获取对应的Article结构体
 	article, err := service.AllServiceApp.FindArticle(articleId)
@@ -82,9 +107,16 @@ func (ac *ArticleController) GetEditArticle(c *gin.Context, articleId int64) {
 }
 
 // 编辑文章最后提交修改
-func (ac *ArticleController) PostEditArticle(c *gin.Context, articleId int64) {
+func (ac *ArticleController) PostEditArticle(c *gin.Context) {
 	// 首先解析前端发过来的请求
 	// 首先得到用户的ID
+	id := c.PostForm("articleId")
+	// 类型转换
+	articleId, err := strconv.ParseInt(id, 10, 64)
+	if err != nil {
+		commen.GVA_LOG.Error("文章id为非整数值，请检查！")
+		commen.FailedWithMsg("文章id为非整数值，请检查！", c)
+	}
 	userId := utils.GetUserID(c)
 	// 根据articleId获取对应的Article结构体
 	article, err := service.AllServiceApp.FindArticle(articleId)
@@ -110,7 +142,14 @@ func (ac *ArticleController) PostEditArticle(c *gin.Context, articleId int64) {
 }
 
 // 删除文章,需要进行jwt验证，之后再判断用户id和article中的userid相同，最后是删除
-func (ac *ArticleController) DelArticle(c *gin.Context, articleId int64) {
+func (ac *ArticleController) DelArticle(c *gin.Context) {
+	id := c.Param("articleId")
+	// 类型转换
+	articleId, err := strconv.ParseInt(id, 10, 64)
+	if err != nil {
+		commen.GVA_LOG.Error("文章id为非整数值，请检查！")
+		commen.FailedWithMsg("文章id为非整数值，请检查！", c)
+	}
 	userId := utils.GetUserID(c)
 	article, err := service.AllServiceApp.FindArticle(articleId)
 	if err != nil {
