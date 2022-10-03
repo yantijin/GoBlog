@@ -27,6 +27,11 @@ func (as *ArticleService) FindArticle(id int64) (*model.Article, error) {
 	return &res, err
 }
 
+func (as *AllService) FindArticles(cnd *utils.SqlCnd) (articleList []model.Article) {
+	cnd.Find(commen.GVA_DB, &articleList)
+	return
+}
+
 func (as *ArticleService) DelArtilce(id int64) error {
 	err := commen.GVA_DB.Delete(&model.Article{}, "id=?", id).Error
 	return err
@@ -39,4 +44,11 @@ func (as *ArticleService) UpdateColumn(db *gorm.DB, id int64, name string, value
 // 对浏览量+1
 func (as *ArticleService) PlusViewCount(articleId int64) error {
 	return as.UpdateColumn(commen.GVA_DB, articleId, "view_count", gorm.Expr("view_count + 1"))
+}
+
+// 获取文章列表,从最近的开始，这里需要改进，如果数据库的表很大，查询会比较慢; 可以添加limit和cursor，一点点查
+//另外，如果添加私有文章功能，则需要再加一个条件判断
+func (as *ArticleService) GetUserArticles(userId int64) (articleList []model.Article) {
+	utils.NewSqlCnd().Eq("user_id", userId).Desc("id").Find(commen.GVA_DB, articleList)
+	return articleList
 }

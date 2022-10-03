@@ -102,9 +102,49 @@ func (ac *ArticleController) PostEditArticle(c *gin.Context, articleId int64) {
 	//都没问题了，调用修改article服务
 	err = service.AllServiceApp.UpdateArticle(article)
 	if err != nil {
-		commen.GVA_LOG.Error("更新文章入库失败，请检查", zap.Error(err))
+		commen.GVA_LOG.Error("更新文章入库失败，请检查数据库连接", zap.Error(err))
 		commen.FailedWithMsg(err.Error(), c)
 		return
 	}
 	commen.OKWithMsg("入库成功", c)
+}
+
+// 删除文章,需要进行jwt验证，之后再判断用户id和article中的userid相同，最后是删除
+func (ac *ArticleController) DelArticle(c *gin.Context, articleId int64) {
+	userId := utils.GetUserID(c)
+	article, err := service.AllServiceApp.FindArticle(articleId)
+	if err != nil {
+		commen.GVA_LOG.Error("获取文章失败，请检查articleId！", zap.Error(err))
+		commen.FailedWithMsg(err.Error(), c)
+		return
+	}
+	if article.UserId != userId {
+		commen.GVA_LOG.Error("token解析用户ID与article对应的用户ID不符，拒绝请求!", zap.Error(err))
+		commen.FailedWithMsg(err.Error(), c)
+		return
+	}
+	// 都没问题，调用文章删除服务
+	err = service.AllServiceApp.DelArtilce(articleId)
+	if err != nil {
+		commen.GVA_LOG.Error("删除文章失败，请检查数据库连接", zap.Error(err))
+		commen.FailedWithMsg(err.Error(), c)
+	}
+	commen.OKWithMsg("删除成功", c)
+}
+
+// 获取某用户所有的文章,首先获取要查询的用户ID,之后根据用户ID获取所有，文章太多可能有问题，需要limit 和 分页
+func (ac *UserController) GetUserAllArticles(c *gin.Context) {
+	// 首先绑定articleRequest结构体，然后通过UserId来查找所有的文章
+	var ar model.ArticleRequest
+	err := c.ShouldBindJSON(&ar)
+	if err != nil {
+		commen.GVA_LOG.Error("解析数据失败，请检查！", zap.Error(err))
+		commen.FailedWithMsg(err.Error(), c)
+		return
+	}
+	// 绑定成功后，调用用户文章查询服务
+	articleList := service.AllServiceApp.GetUserArticles(ar.UserId)
+	// 返回给response
+	articleListResponse := render.BuildArticles(articleList)
+	commen.OkWithDetailed(articleListResponse, "获取成功", c)
 }

@@ -44,3 +44,14 @@ func BuildArticle(article *model.Article) *model.ArticleResponse {
 	}
 	return &rsp
 }
+
+func BuildArticles(articles []model.Article) []model.ArticleResponse {
+	if len(articles) == 0 {
+		return nil
+	}
+	var responses []model.ArticleResponse
+	for _, article := range articles {
+		responses = append(responses, *BuildArticle(&article))
+	}
+	return responses
+}
