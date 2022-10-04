@@ -40,6 +40,11 @@ func (uls *UserLikeService) UpdateColumn(db *gorm.DB, id int64, name string, val
 	return err
 }
 
+func (uls *UserLikeService) UpdateColumns(db *gorm.DB, id int64, columns map[string]interface{}) (err error) {
+	err = db.Model(&model.UserLike{}).Where("id=?", id).Updates(columns).Error
+	return
+}
+
 // 统计对某个实体(文章/评论)的点赞数量
 func (uls *UserLikeService) CountUserLike(db *gorm.DB, entityType string, entityId string) int64 {
 	var count int64 = 0

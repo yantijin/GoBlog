@@ -96,3 +96,13 @@ func (us *UserService) FindUser(db *gorm.DB, id int64) (*model.User, error) {
 	}
 	return &user, err
 }
+
+func (us *UserService) UpdateColumn(db *gorm.DB, id int64, name string, value interface{}) (err error) {
+	err = db.Model(&model.User{}).Where("id=?", id).Update(name, value).Error
+	return
+}
+
+func (us *UserService) UpdateColumns(db *gorm.DB, id int64, columns map[string]interface{}) (err error) {
+	err = db.Model(&model.User{}).Where("id=?", id).Updates(columns).Error
+	return
+}

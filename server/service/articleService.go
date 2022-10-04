@@ -40,6 +40,11 @@ func (as *ArticleService) UpdateColumn(db *gorm.DB, id int64, name string, value
 	return db.Model(&model.Article{}).Where("id=?", id).UpdateColumn(name, value).Error
 }
 
+func (as *ArticleService) UpdateColumns(db *gorm.DB, id int64, columns map[string]interface{}) (err error) {
+	err = db.Model(&model.Article{}).Where("id=?", id).Updates(columns).Error
+	return
+}
+
 // 对浏览量+1
 func (as *ArticleService) PlusViewCount(db *gorm.DB, articleId int64) error {
 	return as.UpdateColumn(db, articleId, "view_count", gorm.Expr("view_count + 1"))
@@ -54,4 +59,16 @@ func (as *ArticleService) GetUserArticles(db *gorm.DB, userId int64) (articleLis
 
 func (as *ArticleService) PlusCommentCount(db *gorm.DB, articleId int64) error {
 	return as.UpdateColumn(db, articleId, "comment_count", gorm.Expr("comment_count+1"))
+}
+
+// 对comment_count以及idx_last_comment_time进行更新
+func (as *ArticleService) OnCommentArticle(db *gorm.DB, ct *model.Comments) error {
+	err := as.UpdateColumns(db, ct.ID, map[string]interface{}{
+		"comment_count":         gorm.Expr("comment_count + 1"),
+		"idx_last_comment_time": ct.CreatedAt.Unix(),
+	})
+	if err != nil {
+		return err
+	}
+	return nil
 }
