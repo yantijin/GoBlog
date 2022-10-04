@@ -7,6 +7,7 @@ import (
 	"GoLog/service"
 	"GoLog/utils"
 	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
@@ -28,14 +29,14 @@ func (ac *ArticleController) GetArticle(c *gin.Context) {
 		commen.GVA_LOG.Error("文章id为非整数值，请检查！")
 		commen.FailedWithMsg("文章id为非整数值，请检查！", c)
 	}
-	article, err := service.AllServiceApp.FindArticle(id)
+	article, err := service.AllServiceApp.FindArticle(commen.GVA_DB, id)
 	if err != nil {
 		commen.GVA_LOG.Error("获取文章错误，请检查", zap.Error(err))
 		commen.FailedWithMsg(err.Error(), c)
 		return
 	}
 	// 获取文章成功，调用浏览量+1的服务
-	err = service.AllServiceApp.PlusViewCount(id)
+	err = service.AllServiceApp.PlusViewCount(commen.GVA_DB, id)
 	if err != nil {
 		commen.GVA_LOG.Error("增加浏览量失败，请检查", zap.Error(err))
 		commen.FailedWithMsg(err.Error(), c)
@@ -54,16 +55,19 @@ func (ac *ArticleController) PostPublishArticle(c *gin.Context) {
 		commen.FailedWithMsg("解析文章失败", c)
 	}
 	// 下面就是将解析的内容绑定到model.Article上
+	now := time.Now()
 	article := model.Article{
-		UserId:      ar.UserId,
-		Title:       ar.Title,
-		Content:     ar.Content,
-		ViewCount:   0,
-		LikeCount:   0,
-		ContentType: ar.ContentType,
+		UserId:          ar.UserId,
+		Title:           ar.Title,
+		Content:         ar.Content,
+		ViewCount:       0,
+		LikeCount:       0,
+		ContentType:     ar.ContentType,
+		CommentCount:    0,
+		LastCommnetTime: now.Unix(),
 	}
 	// 对article入库
-	err = service.AllServiceApp.CreateArticle(&article)
+	err = service.AllServiceApp.CreateArticle(commen.GVA_DB, &article)
 	if err != nil {
 		commen.GVA_LOG.Error("文章入库失败，请检查！", zap.Error(err))
 		commen.FailedWithMsg(err.Error(), c)
@@ -89,7 +93,7 @@ func (ac *ArticleController) GetEditArticle(c *gin.Context) {
 	}
 	userId := utils.GetUserID(c)
 	// 根据articleId获取对应的Article结构体
-	article, err := service.AllServiceApp.FindArticle(articleId)
+	article, err := service.AllServiceApp.FindArticle(commen.GVA_DB, articleId)
 	if err != nil {
 		commen.GVA_LOG.Error("获取文章失败，请检查articleId！", zap.Error(err))
 		commen.FailedWithMsg(err.Error(), c)
@@ -119,7 +123,7 @@ func (ac *ArticleController) PostEditArticle(c *gin.Context) {
 	}
 	userId := utils.GetUserID(c)
 	// 根据articleId获取对应的Article结构体
-	article, err := service.AllServiceApp.FindArticle(articleId)
+	article, err := service.AllServiceApp.FindArticle(commen.GVA_DB, articleId)
 	if err != nil {
 		commen.GVA_LOG.Error("获取文章失败，请检查articleId！", zap.Error(err))
 		commen.FailedWithMsg(err.Error(), c)
@@ -132,7 +136,7 @@ func (ac *ArticleController) PostEditArticle(c *gin.Context) {
 		return
 	}
 	//都没问题了，调用修改article服务
-	err = service.AllServiceApp.UpdateArticle(article)
+	err = service.AllServiceApp.UpdateArticle(commen.GVA_DB, article)
 	if err != nil {
 		commen.GVA_LOG.Error("更新文章入库失败，请检查数据库连接", zap.Error(err))
 		commen.FailedWithMsg(err.Error(), c)
@@ -151,7 +155,7 @@ func (ac *ArticleController) DelArticle(c *gin.Context) {
 		commen.FailedWithMsg("文章id为非整数值，请检查！", c)
 	}
 	userId := utils.GetUserID(c)
-	article, err := service.AllServiceApp.FindArticle(articleId)
+	article, err := service.AllServiceApp.FindArticle(commen.GVA_DB, articleId)
 	if err != nil {
 		commen.GVA_LOG.Error("获取文章失败，请检查articleId！", zap.Error(err))
 		commen.FailedWithMsg(err.Error(), c)
@@ -163,7 +167,7 @@ func (ac *ArticleController) DelArticle(c *gin.Context) {
 		return
 	}
 	// 都没问题，调用文章删除服务
-	err = service.AllServiceApp.DelArtilce(articleId)
+	err = service.AllServiceApp.DelArtilce(commen.GVA_DB, articleId)
 	if err != nil {
 		commen.GVA_LOG.Error("删除文章失败，请检查数据库连接", zap.Error(err))
 		commen.FailedWithMsg(err.Error(), c)
@@ -182,7 +186,7 @@ func (ac *UserController) GetUserAllArticles(c *gin.Context) {
 		return
 	}
 	// 绑定成功后，调用用户文章查询服务
-	articleList := service.AllServiceApp.GetUserArticles(ar.UserId)
+	articleList := service.AllServiceApp.GetUserArticles(commen.GVA_DB, ar.UserId)
 	// 返回给response
 	articleListResponse := render.BuildArticles(articleList)
 	commen.OkWithDetailed(articleListResponse, "获取成功", c)

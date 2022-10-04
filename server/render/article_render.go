@@ -22,8 +22,10 @@ func BuildArticle(article *model.Article) *model.ArticleResponse {
 	rsp.Title = article.Title
 	rsp.ViewCount = article.ViewCount
 	rsp.LikeCount = article.LikeCount
+	rsp.CommentCount = article.CommentCount
+	rsp.CommentTime = article.LastCommnetTime
 	// rsp.
-	user, err := service.AllServiceApp.FindUser(article.UserId)
+	user, err := service.AllServiceApp.FindUser(commen.GVA_DB, article.UserId)
 	if err != nil {
 		commen.GVA_LOG.Error("article信息有误，无法获取对应user信息，请检查！", zap.Error(err))
 	}

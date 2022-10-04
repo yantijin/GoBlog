@@ -28,7 +28,7 @@ func (u *UserController) PostSignUp(c *gin.Context) {
 		Email:    user.Email,
 		Avatar:   user.Avatar,
 	}
-	regUserInfo, err := service.AllServiceApp.UserService.RegisterUser(ruser)
+	regUserInfo, err := service.AllServiceApp.UserService.RegisterUser(commen.GVA_DB, ruser)
 	if err != nil {
 		commen.GVA_LOG.Error("注册失败", zap.Error(err))
 		commen.FailedWithDetailed(regUserInfo, "注册失败", c)
@@ -49,7 +49,7 @@ func (u *UserController) PostLogIn(c *gin.Context) {
 		UserName: user.UserName,
 		Password: user.Password,
 	}
-	loginUser, err := service.AllServiceApp.UserService.LogInUser(&ruser)
+	loginUser, err := service.AllServiceApp.UserService.LogInUser(commen.GVA_DB, &ruser)
 	if err != nil {
 		commen.GVA_LOG.Error("登录失败", zap.Error(err))
 		commen.FailedWithDetailed(loginUser, "登录失败", c)
@@ -91,7 +91,7 @@ func (u *UserController) ChangePwd(c *gin.Context) {
 	userId := utils.GetUserID(c)
 	user := &model.User{GVA_MODEL: commen.GVA_MODEL{ID: userId}, Password: cp.Password}
 	// service.AllServiceApp.UserService.ChangePwd()
-	_, err := service.AllServiceApp.UserService.ChangePwd(user, cp.NewPassword)
+	_, err := service.AllServiceApp.UserService.ChangePwd(commen.GVA_DB, user, cp.NewPassword)
 	if err != nil {
 		commen.FailedWithMsg("修改密码失败,原密码与当前账户不符", c)
 		commen.GVA_LOG.Error("修改密码失败!", zap.Error(err))
