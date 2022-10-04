@@ -16,12 +16,13 @@ type Article struct {
 
 type Comments struct {
 	commen.GVA_MODEL
-	UserId       int64  `gorm:"index:comment_user_id" json:"userId"`              // 评论对应的用户ID
-	EntityType   string `gorm:"not null;default:article" json:"entityType"`       // 评论对应的主体：文章 / 用户评论
-	EntityId     int64  `gorm:"not null;index:comment_entity_id" json:"entityId"` // 评论对应的主体的ID,如article ID/ comment ID
-	Content      string `gorm:"type:longtext;not null" json:"content"`            // 评论内容
-	LikeCount    int64  `gorm:"not null;default:0" json:"likeCount"`              // 评论点赞人数
-	CommentCount int64  `gorm:"not null;default:0" json:"commentCount"`           // 评论的回复人数
+	UserId          int64  `gorm:"index:comment_user_id" json:"userId"`                // 评论对应的用户ID
+	EntityType      string `gorm:"not null;default:article" json:"entityType"`         // 评论对应的主体：文章 / 用户评论
+	EntityId        int64  `gorm:"not null;index:comment_entity_id" json:"entityId"`   // 评论对应的主体的ID,如article ID/ comment ID
+	Content         string `gorm:"type:longtext;not null" json:"content"`              // 评论内容
+	LikeCount       int64  `gorm:"not null;default:0" json:"likeCount"`                // 评论点赞人数
+	CommentCount    int64  `gorm:"not null;default:0" json:"commentCount"`             // 评论的回复人数
+	LastCommentTime int64  `gorm:"index:idx_last_comment_time" json:"lastCommentTime"` // 评论最后被回复的时间
 }
 
 type UserLike struct {
