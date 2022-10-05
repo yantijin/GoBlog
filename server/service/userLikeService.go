@@ -59,6 +59,16 @@ func (usl *UserLikeService) ExistsUserLike(db *gorm.DB, userId int64, entityType
 	return &res, err == nil
 }
 
+// 某用户是否对某些评论进行点赞过，返回点赞过的评论id
+func (usl *UserLikeService) IsLiked(db *gorm.DB, userId int64, entityType string, entityIds []int64) (likedEntityIds []int64) {
+	var list []model.UserLike
+	utils.NewSqlCnd().Eq("user_id", userId).Eq("entity_type", entityType).In("entity_id", entityIds).Find(db, list)
+	for _, like := range list {
+		likedEntityIds = append(likedEntityIds, like.ID)
+	}
+	return
+}
+
 // 点赞操作
 func (usl *UserLikeService) Like(db *gorm.DB, userId int64, entityType string, entityId int64) error {
 	// 首先判断是否已经点过赞

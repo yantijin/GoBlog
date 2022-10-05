@@ -53,3 +53,15 @@ type ArticleRequest struct {
 	// ViewCount   int64  `json:"viewCount"`
 	// LikeCount   int64  `json:"lieCount"`
 }
+
+type CommentResponse struct {
+	UserInfo     *UserInfo `json:"user"`
+	EntityType   string    `json:"entityType"`
+	EntityId     int64     `json:"entityId"`
+	CommentId    int64     `json:"commentId"`
+	Content      string    `json:"content"`
+	LikeCount    int64     `json:"likeCount"`
+	CommentCount int64     `json:"commentCount"`
+	CreateTime   int64     `json:"createTime"`
+	Liked        bool      `json:"liked"` // 此评论是否被当前登录用户点赞
+}
