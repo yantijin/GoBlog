@@ -81,3 +81,31 @@ func (cc *CommentController) PostCreateComment(c *gin.Context) {
 
 // 删除评论,如果有二级评论怎么办？应该需要逻辑删除,而不是真的删除
 // func (cc *CommentController) DelComment(c *gin.Context) {}
+
+// 获取某个用户的Comment
+func GetUserComments(c *gin.Context) {
+	cUserId := utils.GetUserID(c)
+	currentUser, err := service.AllServiceApp.FindUser(commen.GVA_DB, cUserId)
+	if err != nil {
+		commen.GVA_LOG.Error("解析用户出错", zap.Error(err))
+		commen.FailedWithMsg(err.Error(), c)
+		return
+	}
+	userId, ok := c.GetPostForm("userId")
+	if !ok {
+		commen.GVA_LOG.Error("没有userId字段或网络错误,请检查")
+		commen.FailedWithMsg("没有userId字段或网络错误,请检查", c)
+		return
+	}
+	uid, err := strconv.ParseInt(userId, 10, 64)
+	if err != nil {
+		commen.GVA_LOG.Error("userId应该为数字,请检查")
+		commen.FailedWithMsg("userId应该为数字,请检查", c)
+		return
+	}
+	// 调用查找服务
+	comments := service.AllServiceApp.GetUserComments(commen.GVA_DB, uid)
+	// build response
+	commentResp := render.BuildComments(comments, currentUser)
+	commen.OkWithDetailed(commentResp, "获取评论成功", c)
+}

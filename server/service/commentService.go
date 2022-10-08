@@ -90,3 +90,9 @@ func (cs *CommentService) GetComments(db *gorm.DB, entityType string, entityId i
 	}
 	return
 }
+
+// 找到某个用户所有的评论,后续需要加cursor和limit
+func (cs *CommentService) GetUserComments(db *gorm.DB, userId int64) (cList []model.Comments) {
+	db.Where("comment_user_id=?", userId).Find(&cList)
+	return
+}
