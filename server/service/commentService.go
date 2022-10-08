@@ -12,21 +12,22 @@ import (
 type CommentService struct{}
 
 func (cs *CommentService) CreateComment(db *gorm.DB, ct *model.Comments) error {
-	return commen.GVA_DB.Create(ct).Error
+	return db.Create(ct).Error
 }
 
 func (cs *CommentService) UpdateComment(db *gorm.DB, ct *model.Comments) error {
-	return commen.GVA_DB.Save(ct).Error
+	return db.Save(ct).Error
 }
 
 func (cs *CommentService) FindComment(db *gorm.DB, commentId int64) (model.Comments, error) {
 	comment := model.Comments{}
-	err := utils.NewSqlCnd().Where("id=?", commentId).FindOne(commen.GVA_DB, &comment)
+	err := utils.NewSqlCnd().Where("id=?", commentId).FindOne(db, &comment)
 	return comment, err
 }
 
 func (cs *CommentService) DelComment(db *gorm.DB, commentId int64) error {
-	err := commen.GVA_DB.Delete("id=?", commentId).Error
+	err := cs.UpdateColumn(db, commentId, "status", 0) // 逻辑删除
+	// err := db.Delete("id=?", commentId).Error
 	return err
 }
 

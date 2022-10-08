@@ -23,6 +23,7 @@ type Comments struct {
 	LikeCount       int64  `gorm:"not null;default:0" json:"likeCount"`                // 评论点赞人数
 	CommentCount    int64  `gorm:"not null;default:0" json:"commentCount"`             // 评论的回复人数
 	LastCommentTime int64  `gorm:"index:idx_last_comment_time" json:"lastCommentTime"` // 评论最后被回复的时间
+	Status          int    `gorm:"index:status;default:1" json:"status"`               // 当前评论状态, 0:删除,1:正常
 }
 
 type UserLike struct {
@@ -64,4 +65,10 @@ type CommentResponse struct {
 	CommentCount int64     `json:"commentCount"`
 	CreateTime   int64     `json:"createTime"`
 	Liked        bool      `json:"liked"` // 此评论是否被当前登录用户点赞
+}
+
+type CommentJson struct {
+	EntityType string `json:"entityType"`
+	EntityId   int64  `json:"entityId"`
+	Content    string `json:"content"`
 }
