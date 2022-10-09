@@ -4,6 +4,8 @@ import "github.com/gin-gonic/gin"
 
 type AllRouters struct {
 	UserRouter
+	ArticleRouter
+	CommentRouter
 }
 
 var ARouters = new(AllRouters)

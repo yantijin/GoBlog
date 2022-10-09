@@ -70,7 +70,6 @@ func (cc *CommentController) PostCreateComment(c *gin.Context) {
 		return
 	}
 	commen.OKWithMsg("创建成功", c)
-	return
 }
 
 // 编辑评论,对content内容进行编辑，这里需要考虑怎么获取评论，因为commentId这个是无法写在前端的
@@ -83,7 +82,7 @@ func (cc *CommentController) PostCreateComment(c *gin.Context) {
 // func (cc *CommentController) DelComment(c *gin.Context) {}
 
 // 获取某个用户的Comment
-func GetUserComments(c *gin.Context) {
+func (cc *CommentController) GetUserComments(c *gin.Context) {
 	cUserId := utils.GetUserID(c)
 	currentUser, err := service.AllServiceApp.FindUser(commen.GVA_DB, cUserId)
 	if err != nil {
