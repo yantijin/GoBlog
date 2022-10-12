@@ -25,6 +25,11 @@ func (cs *CommentService) FindComment(db *gorm.DB, commentId int64) (model.Comme
 	return comment, err
 }
 
+func (cs *CommentService) FindComments(db *gorm.DB, cnd *utils.SqlCnd) (comments []model.Comments) {
+	cnd.Find(db, &comments)
+	return
+}
+
 func (cs *CommentService) DelComment(db *gorm.DB, commentId int64) error {
 	err := cs.UpdateColumn(db, commentId, "status", 0) // 逻辑删除
 	// err := db.Delete("id=?", commentId).Error
