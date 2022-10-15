@@ -6,6 +6,7 @@ type AllRouters struct {
 	UserRouter
 	ArticleRouter
 	CommentRouter
+	UserLikeRouter
 }
 
 var ARouters = new(AllRouters)

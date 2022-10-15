@@ -16,8 +16,8 @@ type UserLikeController struct{}
 
 // 获取某用户点赞的评论/文章，取决于entityType, userId
 func (ulc *UserLikeController) GetUserLike(c *gin.Context) {
-	entityType := c.PostForm("entity_type")
-	userIdStr := c.PostForm("user_id")
+	entityType := c.Query("entity_type")
+	userIdStr := c.Query("user_id")
 	if len(entityType) == 0 || len(userIdStr) == 0 {
 		commen.GVA_LOG.Error("请求错误，请检查参数是否为空")
 		commen.FailedWithMsg("请求错误，请检查参数是否为空", c)
