@@ -65,3 +65,69 @@ func (ulc *UserLikeController) GetUserLike(c *gin.Context) {
 		return
 	}
 }
+
+// 对实体进行点赞
+func (uls *UserLikeController) PostLikeEntity(c *gin.Context) {
+	userId := utils.GetUserID(c)
+	entityType := c.PostForm("entity_type")
+	entityIdStr := c.PostForm("entity_id")
+	entityId, err := strconv.ParseInt(entityIdStr, 10, 64)
+	if err != nil {
+		commen.GVA_LOG.Error("解析entityId失败!", zap.Error(err))
+		commen.FailedWithMsg(err.Error(), c)
+		return
+	}
+	if entityType == model.EntityArticle {
+		err = service.AllServiceApp.ArticleLike(commen.GVA_DB, userId, entityId)
+		if err != nil {
+			commen.GVA_LOG.Error("对文章点赞失败，请检查!", zap.Error(err))
+			commen.FailedWithMsg(err.Error(), c)
+			return
+		}
+	} else if entityType == model.EntityComment {
+		err = service.AllServiceApp.CommentLike(commen.GVA_DB, userId, entityId)
+		if err != nil {
+			commen.GVA_LOG.Error("对评论点赞失败，请检查", zap.Error(err))
+			commen.FailedWithMsg(err.Error(), c)
+			return
+		}
+	} else {
+		commen.GVA_LOG.Error("entityType错误，请检查！")
+		commen.FailedWithMsg("entityType错误，请检查！", c)
+		return
+	}
+	commen.OKWithMsg("对实体点赞成功！", c)
+}
+
+// 对实体取消点赞
+func (uls *UserLikeController) PostUnlikeEntity(c *gin.Context) {
+	userId := utils.GetUserID(c)
+	entityType := c.PostForm("entity_type")
+	entityIdStr := c.PostForm("entity_id")
+	entityId, err := strconv.ParseInt(entityIdStr, 10, 64)
+	if err != nil {
+		commen.GVA_LOG.Error("解析entityId失败!", zap.Error(err))
+		commen.FailedWithMsg(err.Error(), c)
+		return
+	}
+	if entityType == model.EntityArticle {
+		err = service.AllServiceApp.ArticleUnLike(commen.GVA_DB, userId, entityId)
+		if err != nil {
+			commen.GVA_LOG.Error("对文章取消点赞失败，请检查!", zap.Error(err))
+			commen.FailedWithMsg(err.Error(), c)
+			return
+		}
+	} else if entityType == model.EntityComment {
+		err = service.AllServiceApp.CommentUnLike(commen.GVA_DB, userId, entityId)
+		if err != nil {
+			commen.GVA_LOG.Error("对评论取消点赞失败，请检查", zap.Error(err))
+			commen.FailedWithMsg(err.Error(), c)
+			return
+		}
+	} else {
+		commen.GVA_LOG.Error("entityType错误，请检查！")
+		commen.FailedWithMsg("entityType错误，请检查！", c)
+		return
+	}
+	commen.OKWithMsg("对实体取消点赞成功！", c)
+}

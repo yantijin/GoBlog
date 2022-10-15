@@ -100,7 +100,7 @@ func (usl *UserLikeService) UnLike(db *gorm.DB, userId int64, entityType string,
 }
 
 // 对评论点赞，注意事务一致性
-func (usl *UserLikeService) ComentLike(db *gorm.DB, userId int64, commentId int64) error {
+func (usl *UserLikeService) CommentLike(db *gorm.DB, userId int64, commentId int64) error {
 	_, err := AllServiceApp.CommentService.FindComment(db, commentId)
 	if err != nil {
 		commen.GVA_LOG.Error("无法查找到对应的comment，请检查", zap.Error(err))
@@ -145,7 +145,7 @@ func (usl *UserLikeService) ArticleLike(db *gorm.DB, userId int64, articleId int
 }
 
 // 对comment取消点赞，注意事务一致性
-func (usl *UserLikeService) ComentUnLike(db *gorm.DB, userId int64, commentId int64) error {
+func (usl *UserLikeService) CommentUnLike(db *gorm.DB, userId int64, commentId int64) error {
 	_, err := AllServiceApp.CommentService.FindComment(db, commentId)
 	if err != nil {
 		commen.GVA_LOG.Error("无法查找到对应的comment，请检查", zap.Error(err))
