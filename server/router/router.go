@@ -16,5 +16,8 @@ func SetRouters() *gin.Engine {
 	// 通过调用函数,来对路由组进行初始化
 	routerGroup := Router.Group("")
 	ARouters.InitUserRouter(*routerGroup)
+	ARouters.InitArticleRouter(*routerGroup)
+	ARouters.InitCommentRouter(*routerGroup)
+	ARouters.InitUserLikeRouter(*routerGroup)
 	return Router
 }

@@ -53,7 +53,7 @@ func (as *ArticleService) PlusViewCount(db *gorm.DB, articleId int64) error {
 // 获取文章列表,从最近的开始，这里需要改进，如果数据库的表很大，查询会比较慢; 可以添加limit和cursor，一点点查
 //另外，如果添加私有文章功能，则需要再加一个条件判断
 func (as *ArticleService) GetUserArticles(db *gorm.DB, userId int64) (articleList []model.Article) {
-	utils.NewSqlCnd().Eq("user_id", userId).Desc("id").Find(db, articleList)
+	utils.NewSqlCnd().Eq("user_id", userId).Desc("id").Find(db, &articleList)
 	return articleList
 }
 

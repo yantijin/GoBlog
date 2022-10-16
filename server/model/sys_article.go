@@ -50,9 +50,16 @@ type ArticleRequest struct {
 	UserId      int64  `josn:"userId"`
 	Title       string `json:"title"`
 	Content     string `json:"content"`
-	ContentType string `json:"ContentType"`
+	ContentType string `json:"contentType"`
 	// ViewCount   int64  `json:"viewCount"`
 	// LikeCount   int64  `json:"lieCount"`
+}
+
+type ArticleEditRequest struct {
+	UserId    int64  `json:"userId"`
+	ArticleId int64  `json:"articleId"`
+	Title     string `json:"title"`
+	Content   string `json:"content"`
 }
 
 type CommentResponse struct {

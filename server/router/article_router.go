@@ -13,7 +13,7 @@ func (u *ArticleRouter) InitArticleRouter(router gin.RouterGroup) {
 	ArticleRouter := router.Group("/article")
 
 	ArticleRouter.GET("/getArticle", controller.AllControllerGroup.GetArticle)
-	ArticleRouter.POST("/posePublishArticle", controller.AllControllerGroup.PostPublishArticle)
+	ArticleRouter.POST("/postPublishArticle", controller.AllControllerGroup.PostPublishArticle)
 	ArticleRouter.GET("/getEditArticle", controller.AllControllerGroup.GetEditArticle)
 	ArticleRouter.POST("/postEditArticle", controller.AllControllerGroup.PostEditArticle)
 	ArticleRouter.DELETE("/deleteArtile/:articleId", controller.AllControllerGroup.DelArticle)

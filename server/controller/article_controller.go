@@ -114,16 +114,16 @@ func (ac *ArticleController) GetEditArticle(c *gin.Context) {
 func (ac *ArticleController) PostEditArticle(c *gin.Context) {
 	// 首先解析前端发过来的请求
 	// 首先得到用户的ID
-	id := c.PostForm("articleId")
-	// 类型转换
-	articleId, err := strconv.ParseInt(id, 10, 64)
+	var aer model.ArticleEditRequest
+	err := c.ShouldBindJSON(&aer)
 	if err != nil {
-		commen.GVA_LOG.Error("文章id为非整数值，请检查！")
-		commen.FailedWithMsg("文章id为非整数值，请检查！", c)
+		commen.GVA_LOG.Error("绑定结构体错误，请检查！", zap.Error(err))
+		commen.FailedWithMsg(err.Error(), c)
+		return
 	}
 	userId := utils.GetUserID(c)
 	// 根据articleId获取对应的Article结构体
-	article, err := service.AllServiceApp.FindArticle(commen.GVA_DB, articleId)
+	article, err := service.AllServiceApp.FindArticle(commen.GVA_DB, aer.ArticleId)
 	if err != nil {
 		commen.GVA_LOG.Error("获取文章失败，请检查articleId！", zap.Error(err))
 		commen.FailedWithMsg(err.Error(), c)
@@ -136,9 +136,12 @@ func (ac *ArticleController) PostEditArticle(c *gin.Context) {
 		return
 	}
 	//都没问题了，调用修改article服务
-	err = service.AllServiceApp.UpdateArticle(commen.GVA_DB, article)
+	err = service.AllServiceApp.ArticleService.UpdateColumns(commen.GVA_DB, aer.ArticleId, map[string]interface{}{
+		"title":   aer.Title,
+		"content": aer.Content,
+	})
 	if err != nil {
-		commen.GVA_LOG.Error("更新文章入库失败，请检查数据库连接", zap.Error(err))
+		commen.GVA_LOG.Error("更新文章失败，请检查！", zap.Error(err))
 		commen.FailedWithMsg(err.Error(), c)
 		return
 	}
@@ -177,16 +180,20 @@ func (ac *ArticleController) DelArticle(c *gin.Context) {
 
 // 获取某用户所有的文章,首先获取要查询的用户ID,之后根据用户ID获取所有，文章太多可能有问题，需要limit 和 分页
 func (ac *UserController) GetUserAllArticles(c *gin.Context) {
-	// 首先绑定articleRequest结构体，然后通过UserId来查找所有的文章
-	var ar model.ArticleRequest
-	err := c.ShouldBindJSON(&ar)
-	if err != nil {
-		commen.GVA_LOG.Error("解析数据失败，请检查！", zap.Error(err))
-		commen.FailedWithMsg(err.Error(), c)
+	userIdStr, status := c.GetQuery("id")
+	if !status {
+		commen.GVA_LOG.Error("未解析到用户id参数，请检查")
+		commen.FailedWithMsg("未解析到用户id参数，请检查", c)
 		return
 	}
+	// 类型转换
+	id, err := strconv.ParseInt(userIdStr, 10, 64)
+	if err != nil {
+		commen.GVA_LOG.Error("用户id为非整数值，请检查！")
+		commen.FailedWithMsg("用户id为非整数值，请检查！", c)
+	}
 	// 绑定成功后，调用用户文章查询服务
-	articleList := service.AllServiceApp.GetUserArticles(commen.GVA_DB, ar.UserId)
+	articleList := service.AllServiceApp.GetUserArticles(commen.GVA_DB, id)
 	// 返回给response
 	articleListResponse := render.BuildArticles(articleList)
 	commen.OkWithDetailed(articleListResponse, "获取成功", c)
