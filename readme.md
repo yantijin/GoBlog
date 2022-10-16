@@ -4,12 +4,12 @@
 
 ### 后端
 
-* GIN
-* GORM-> 数据库
+* :white_check_mark: GIN
+* :white_check_mark: GORM-> 数据库
 * JWT-GO 鉴权
 * Casbin->权限管理
-* Zap->日志管理
-* Viper->配置读取
+* :white_check_mark: Zap->日志管理
+* :white_check_mark: Viper->配置读取
 * redis-go 缓存
 
 ### 前端
@@ -19,7 +19,43 @@
 
 ## 主要功能
 
-* 注册，登录
+* 用户信息相关：
+
+  * :white_check_mark: 注册 `user/signup`
+
+  * :white_check_mark: 登录 `user/signin`
+
+  * :white_check_mark: 修改密码 `user/change_pwd`
+
+  * 编辑更新信息
+
+* 文章功能：
+
+  * :white_check_mark: 发表文章 `article/postPublishArticle`
+
+  * :white_check_mark: 编辑文章 `article/getEditArticle` `article/postEditArticle`
+
+  * :white_check_mark: 删除文章 `article/deleteArtile/:artilceId`
+
+  * :white_check_mark: 获取某用户的文章 `article/getUserArticles?id=xxx`
+
+  * :white_check_mark: 根据文章id查询文章 `article/getArticle?=id=xxx`
+
+* 评论功能：
+
+  * :white_check_mark: 对文章/评论进行评论 `comment/postCreateComments` 
+
+  * :white_check_mark: 获取文章/评论的所有回复 `comment/postGetComments`
+
+  * :white_check_mark: 获取某用户的所有回复（包括评论和文章） `comment/getUserComments?id=xxx`
+
+* 点赞功能：
+
+  * :white_check_mark: 对文章/评论点赞 `user_like/postLike`
+
+  * :white_check_mark: 对文章/评论取消点赞 `user_like/postUnlike`
+
+  * :white_check_mark: 获取某用户对文章/评论的所有点赞 `user_lie/getUserLike?entity_type=xxx&user_id=xxx`
 
 * 用户权限管理
 
