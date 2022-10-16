@@ -79,3 +79,9 @@ type CommentJson struct {
 	EntityId   int64  `json:"entityId"`
 	Content    string `json:"content"`
 }
+
+type UserLikeRequest struct {
+	UserId     int64  `json:"userId"`
+	EntityType string `json:"entityType"`
+	EntityId   int64  `json:"entityId"`
+}

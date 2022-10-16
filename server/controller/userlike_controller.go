@@ -69,23 +69,27 @@ func (ulc *UserLikeController) GetUserLike(c *gin.Context) {
 // 对实体进行点赞
 func (uls *UserLikeController) PostLikeEntity(c *gin.Context) {
 	userId := utils.GetUserID(c)
-	entityType := c.PostForm("entity_type")
-	entityIdStr := c.PostForm("entity_id")
-	entityId, err := strconv.ParseInt(entityIdStr, 10, 64)
+	var ulr model.UserLikeRequest
+	err := c.ShouldBindJSON(&ulr)
 	if err != nil {
-		commen.GVA_LOG.Error("解析entityId失败!", zap.Error(err))
+		commen.GVA_LOG.Error("绑定数据失败，请检查", zap.Error(err))
 		commen.FailedWithMsg(err.Error(), c)
 		return
 	}
-	if entityType == model.EntityArticle {
-		err = service.AllServiceApp.ArticleLike(commen.GVA_DB, userId, entityId)
+	if ulr.UserId != userId {
+		commen.GVA_LOG.Error("登录用户id与绑定数据的id不同，请检查！")
+		commen.FailedWithMsg("登录用户id与绑定数据的id不同，请检查！", c)
+		return
+	}
+	if ulr.EntityType == model.EntityArticle {
+		err = service.AllServiceApp.ArticleLike(commen.GVA_DB, userId, ulr.EntityId)
 		if err != nil {
 			commen.GVA_LOG.Error("对文章点赞失败，请检查!", zap.Error(err))
 			commen.FailedWithMsg(err.Error(), c)
 			return
 		}
-	} else if entityType == model.EntityComment {
-		err = service.AllServiceApp.CommentLike(commen.GVA_DB, userId, entityId)
+	} else if ulr.EntityType == model.EntityComment {
+		err = service.AllServiceApp.CommentLike(commen.GVA_DB, userId, ulr.EntityId)
 		if err != nil {
 			commen.GVA_LOG.Error("对评论点赞失败，请检查", zap.Error(err))
 			commen.FailedWithMsg(err.Error(), c)
@@ -102,23 +106,35 @@ func (uls *UserLikeController) PostLikeEntity(c *gin.Context) {
 // 对实体取消点赞
 func (uls *UserLikeController) PostUnlikeEntity(c *gin.Context) {
 	userId := utils.GetUserID(c)
-	entityType := c.PostForm("entity_type")
-	entityIdStr := c.PostForm("entity_id")
-	entityId, err := strconv.ParseInt(entityIdStr, 10, 64)
+	var ulr model.UserLikeRequest
+	err := c.ShouldBindJSON(&ulr)
 	if err != nil {
-		commen.GVA_LOG.Error("解析entityId失败!", zap.Error(err))
+		commen.GVA_LOG.Error("绑定数据失败，请检查", zap.Error(err))
 		commen.FailedWithMsg(err.Error(), c)
 		return
 	}
-	if entityType == model.EntityArticle {
-		err = service.AllServiceApp.ArticleUnLike(commen.GVA_DB, userId, entityId)
+	if ulr.UserId != userId {
+		commen.GVA_LOG.Error("登录用户id与绑定数据的id不同，请检查！")
+		commen.FailedWithMsg("登录用户id与绑定数据的id不同，请检查！", c)
+		return
+	}
+	// entityType := c.PostForm("entity_type")
+	// entityIdStr := c.PostForm("entity_id")
+	// entityId, err := strconv.ParseInt(entityIdStr, 10, 64)
+	// if err != nil {
+	// 	commen.GVA_LOG.Error("解析entityId失败!", zap.Error(err))
+	// 	commen.FailedWithMsg(err.Error(), c)
+	// 	return
+	// }
+	if ulr.EntityType == model.EntityArticle {
+		err = service.AllServiceApp.ArticleUnLike(commen.GVA_DB, userId, ulr.EntityId)
 		if err != nil {
 			commen.GVA_LOG.Error("对文章取消点赞失败，请检查!", zap.Error(err))
 			commen.FailedWithMsg(err.Error(), c)
 			return
 		}
-	} else if entityType == model.EntityComment {
-		err = service.AllServiceApp.CommentUnLike(commen.GVA_DB, userId, entityId)
+	} else if ulr.EntityType == model.EntityComment {
+		err = service.AllServiceApp.CommentUnLike(commen.GVA_DB, userId, ulr.EntityId)
 		if err != nil {
 			commen.GVA_LOG.Error("对评论取消点赞失败，请检查", zap.Error(err))
 			commen.FailedWithMsg(err.Error(), c)

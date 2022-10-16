@@ -136,7 +136,7 @@ func (usl *UserLikeService) ArticleLike(db *gorm.DB, userId int64, articleId int
 			return err
 		}
 		// article中的like_count + 1
-		return AllServiceApp.ArticleService.UpdateColumn(tx, articleId, "like_count", gorm.Expr("like_cout + 1"))
+		return AllServiceApp.ArticleService.UpdateColumn(tx, articleId, "like_count", gorm.Expr("like_count + 1"))
 	})
 	if err != nil {
 		return err
@@ -181,7 +181,7 @@ func (usl *UserLikeService) ArticleUnLike(db *gorm.DB, userId int64, articleId i
 			return err
 		}
 		// article中的like_count - 1
-		return AllServiceApp.ArticleService.UpdateColumn(tx, articleId, "like_count", gorm.Expr("like_cout - 1"))
+		return AllServiceApp.ArticleService.UpdateColumn(tx, articleId, "like_count", gorm.Expr("like_count - 1"))
 	})
 	if err != nil {
 		return err
