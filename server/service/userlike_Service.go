@@ -24,7 +24,7 @@ func (uls *UserLikeService) FindUserLike(db *gorm.DB, id int64) (*model.UserLike
 }
 
 func (uls *UserLikeService) FindUserLikesByUserId(db *gorm.DB, id int64) (list []model.UserLike) {
-	utils.NewSqlCnd().Where("ul_user_id=?", id).Desc("id").Find(db, &list)
+	utils.NewSqlCnd().Where("user_id=?", id).Desc("id").Find(db, &list)
 	return
 }
 
@@ -54,14 +54,14 @@ func (uls *UserLikeService) CountUserLike(db *gorm.DB, entityType string, entity
 // 是否已点赞过
 func (usl *UserLikeService) ExistsUserLike(db *gorm.DB, userId int64, entityType string, entityId int64) (*model.UserLike, bool) {
 	var res model.UserLike
-	err := utils.NewSqlCnd().Eq("ul_user_id", userId).Eq("entity_type", entityType).Eq("entity_id", entityId).FindOne(db, &res)
+	err := utils.NewSqlCnd().Eq("user_id", userId).Eq("entity_type", entityType).Eq("entity_id", entityId).FindOne(db, &res)
 	return &res, err == nil
 }
 
 // 某用户是否对某些评论进行点赞过，返回点赞过的评论id
 func (usl *UserLikeService) IsLiked(db *gorm.DB, userId int64, entityType string, entityIds []int64) (likedEntityIds []int64) {
 	var list []model.UserLike
-	utils.NewSqlCnd().Eq("ul_user_id", userId).Eq("entity_type", entityType).In("entity_id", entityIds).Find(db, list)
+	utils.NewSqlCnd().Eq("user_id", userId).Eq("entity_type", entityType).In("entity_id", entityIds).Find(db, &list)
 	for _, like := range list {
 		likedEntityIds = append(likedEntityIds, like.ID)
 	}
@@ -192,7 +192,7 @@ func (usl *UserLikeService) ArticleUnLike(db *gorm.DB, userId int64, articleId i
 // 获取某用户对某实体的点赞数据,返回对应的entityIds
 func (usl *UserLikeService) FindPersonLikes(db *gorm.DB, userId int64, entityType string) (entityIds []int64) {
 	var ullist []model.UserLike
-	db.Where("ul_user_id=?", userId).Where("entity_type", entityType).Order("id DESC").Find(&ullist)
+	db.Where("user_id=?", userId).Where("entity_type", entityType).Order("id DESC").Find(&ullist)
 	if len(ullist) > 0 {
 		for _, term := range ullist {
 			entityIds = append(entityIds, term.EntityId)

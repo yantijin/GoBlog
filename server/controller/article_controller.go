@@ -64,7 +64,7 @@ func (ac *ArticleController) PostPublishArticle(c *gin.Context) {
 		LikeCount:       0,
 		ContentType:     ar.ContentType,
 		CommentCount:    0,
-		LastCommnetTime: now.Unix(),
+		LastCommentTime: now.Unix(),
 	}
 	// 对article入库
 	err = service.AllServiceApp.CreateArticle(commen.GVA_DB, &article)

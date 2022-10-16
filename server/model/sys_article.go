@@ -11,7 +11,7 @@ type Article struct {
 	ContentType     string `gorm:"type:varchar(32);not null" json:"contentType"`      // 内容类型：markdown还是html
 	LikeCount       int64  `gorm:"not null;default:0" json:"likeCount"`               // 评论点赞人数
 	CommentCount    int64  `gorm:"not null;default:0" json:"commentCount"`            // 文章被人评论的次数
-	LastCommnetTime int64  `gorm:"index:idx_last_comment_time" json"lastCommentTime"` // 文章最后被回复的时间
+	LastCommentTime int64  `gorm:"index:idx_last_comment_time" json"lastCommentTime"` // 文章最后被回复的时间
 }
 
 type Comments struct {

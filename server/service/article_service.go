@@ -63,9 +63,9 @@ func (as *ArticleService) PlusCommentCount(db *gorm.DB, articleId int64) error {
 
 // 对comment_count以及idx_last_comment_time进行更新
 func (as *ArticleService) OnCommentArticle(db *gorm.DB, ct *model.Comments) error {
-	err := as.UpdateColumns(db, ct.ID, map[string]interface{}{
-		"comment_count":         gorm.Expr("comment_count + 1"),
-		"idx_last_comment_time": ct.CreatedAt.Unix(),
+	err := as.UpdateColumns(db, ct.EntityId, map[string]interface{}{
+		"comment_count":     gorm.Expr("comment_count + 1"),
+		"last_comment_time": ct.CreatedAt.Unix(),
 	})
 	if err != nil {
 		return err

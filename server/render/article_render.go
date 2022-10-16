@@ -23,7 +23,7 @@ func BuildArticle(article *model.Article) *model.ArticleResponse {
 	rsp.ViewCount = article.ViewCount
 	rsp.LikeCount = article.LikeCount
 	rsp.CommentCount = article.CommentCount
-	rsp.CommentTime = article.LastCommnetTime
+	rsp.CommentTime = article.LastCommentTime
 	// rsp.
 	user, err := service.AllServiceApp.FindUser(commen.GVA_DB, article.UserId)
 	if err != nil {

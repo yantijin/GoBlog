@@ -16,29 +16,24 @@ import (
 type CommentController struct{}
 
 // 获取comments，这里是登录状态，才能保证返回前端的是对应的点赞数据
-func (cc *CommentController) GetComments(c *gin.Context) {
+func (cc *CommentController) PostGetComments(c *gin.Context) {
 	userId := utils.GetUserID(c)
 	currentUser, err := service.AllServiceApp.FindUser(commen.GVA_DB, userId)
 	if err != nil {
-		commen.GVA_LOG.Error("解析用户出错", zap.Error(err))
+		commen.GVA_LOG.Error("获取当前用户信息失败", zap.Error(err))
 		commen.FailedWithMsg(err.Error(), c)
 		return
 	}
-	entityType := c.PostForm("entityType")
-	entityId_str := c.PostForm("entityId")
-	if len(entityType) == 0 {
-		commen.GVA_LOG.Error("entityType解析出错或为空，请检查")
-		commen.FailedWithMsg("entityType解析出错或为空，请检查", c)
-		return
-	}
-	entityId, err := strconv.ParseInt(entityId_str, 10, 64)
+	var cj model.CommentJson
+	err = c.ShouldBindJSON(&cj)
 	if err != nil {
-		commen.GVA_LOG.Error("entityId解析出错或为空，请检查")
-		commen.FailedWithMsg("entityId解析出错或为空，请检查", c)
+		commen.GVA_LOG.Error("绑定结构体失败，请检查", zap.Error(err))
+		commen.FailedWithMsg(err.Error(), c)
 		return
 	}
+	// }
 	// 调用commentService中GetComments的服务
-	comments := service.AllServiceApp.GetComments(commen.GVA_DB, entityType, entityId)
+	comments := service.AllServiceApp.GetComments(commen.GVA_DB, cj.EntityType, cj.EntityId)
 	commentResp := render.BuildComments(comments, currentUser)
 	commen.OkWithDetailed(commentResp, "获取评论成功", c)
 }
@@ -90,7 +85,7 @@ func (cc *CommentController) GetUserComments(c *gin.Context) {
 		commen.FailedWithMsg(err.Error(), c)
 		return
 	}
-	userId, ok := c.GetPostForm("userId")
+	userId, ok := c.GetQuery("id")
 	if !ok {
 		commen.GVA_LOG.Error("没有userId字段或网络错误,请检查")
 		commen.FailedWithMsg("没有userId字段或网络错误,请检查", c)

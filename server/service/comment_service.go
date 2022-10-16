@@ -4,6 +4,7 @@ import (
 	"GoLog/commen"
 	"GoLog/model"
 	"GoLog/utils"
+	"errors"
 
 	"gorm.io/gorm"
 )
@@ -42,7 +43,7 @@ func (cs *CommentService) UpdateColumn(db *gorm.DB, id int64, name string, value
 }
 
 func (cs *CommentService) UpdateColumns(db *gorm.DB, id int64, columns map[string]interface{}) error {
-	err := db.Model(&model.Comments{}).Where("id=?").Updates(columns).Error
+	err := db.Model(&model.Comments{}).Where("id=?", id).Updates(columns).Error
 	return err
 }
 
@@ -61,10 +62,12 @@ func (cs *CommentService) PublishComment(ct *model.Comments) error {
 				return err
 			}
 		} else if ct.EntityType == model.EntityComment {
-			err = cs.OnCommentComment(tx, ct)
+			err = AllServiceApp.OnCommentComment(tx, ct)
 			if err != nil {
 				return err
 			}
+		} else {
+			return errors.New("请检查entityType！")
 		}
 		return nil
 	})
@@ -76,9 +79,9 @@ func (cs *CommentService) PublishComment(ct *model.Comments) error {
 
 //对comment中的commnet_count以及idx_last_comment_time进行更新
 func (cs *CommentService) OnCommentComment(db *gorm.DB, ct *model.Comments) error {
-	err := cs.UpdateColumns(db, ct.ID, map[string]interface{}{
-		"comment_count":         gorm.Expr("comment_count + 1"),
-		"idx_last_comment_time": ct.CreatedAt.Unix(),
+	err := cs.UpdateColumns(db, ct.EntityId, map[string]interface{}{
+		"comment_count":     gorm.Expr("comment_count + 1"),
+		"last_comment_time": ct.CreatedAt.Unix(),
 	})
 	if err != nil {
 		return err
@@ -98,6 +101,6 @@ func (cs *CommentService) GetComments(db *gorm.DB, entityType string, entityId i
 
 // 找到某个用户所有的评论,后续需要加cursor和limit
 func (cs *CommentService) GetUserComments(db *gorm.DB, userId int64) (cList []model.Comments) {
-	db.Where("comment_user_id=?", userId).Where("status=?", 1).Find(&cList) // 只查找没有删除过的评论
+	db.Where("user_id=?", userId).Where("status=?", 1).Find(&cList) // 只查找没有删除过的评论
 	return
 }
