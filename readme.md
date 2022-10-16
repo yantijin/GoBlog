@@ -27,7 +27,7 @@
 
   * :white_check_mark: 修改密码 `user/change_pwd`
 
-  * 编辑更新信息
+  * :white_check_mark: 编辑更新信息 `user/getEditUser` `user/postEditUser`
 
 * 文章功能：
 

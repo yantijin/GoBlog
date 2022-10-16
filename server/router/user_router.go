@@ -15,4 +15,6 @@ func (u *UserRouter) InitUserRouter(router gin.RouterGroup) {
 	userRouter.POST("/signup", controller.AllControllerGroup.PostSignUp)
 	userRouter.POST("/signin", controller.AllControllerGroup.PostLogIn)
 	userRouter.POST("/change_pwd", controller.AllControllerGroup.ChangePwd)
+	userRouter.GET("/getEditUser", controller.AllControllerGroup.GetEditUserInfo)
+	userRouter.POST("/postEditUser", controller.AllControllerGroup.PostEditUserInfo)
 }

@@ -48,3 +48,10 @@ type UserInfo struct {
 	Avatar     string `json:"avatar"`
 	CreateTime int64  `json:"createTime"`
 }
+
+type UserResponse struct {
+	UserName string `json:"userName"`
+	NickName string `json:"nickname"`
+	Email    string `json:"email"`
+	Avatar   string `json:"avatar"`
+}

@@ -99,3 +99,47 @@ func (u *UserController) ChangePwd(c *gin.Context) {
 	}
 	commen.OKWithMsg("修改密码成功", c)
 }
+
+// 编辑用户信息，首先需要获取，需要首先jwt验证id
+func (u *UserController) GetEditUserInfo(c *gin.Context) {
+	userId := utils.GetUserID(c)
+	user, err := service.AllServiceApp.FindUser(commen.GVA_DB, userId)
+	if err != nil {
+		commen.GVA_LOG.Error("验证用户失败，请登录", zap.Error(err))
+		commen.FailedWithMsg(err.Error(), c)
+		return
+	}
+	usp := model.UserResponse{
+		UserName: user.UserName,
+		NickName: user.NickName,
+		Email:    user.Email,
+		Avatar:   user.Avatar,
+	}
+	commen.OkWithDetailed(&usp, "获取用户信息成功", c)
+}
+
+// 对用户的信息进行更改，需要首先经过jwt的验证
+func (u *UserController) PostEditUserInfo(c *gin.Context) {
+	userId := utils.GetUserID(c)
+	var asp model.UserResponse
+	err := c.ShouldBindJSON(&asp)
+	if err != nil {
+		commen.GVA_LOG.Error("绑定数据失败，请检查", zap.Error(err))
+		commen.FailedWithMsg(err.Error(), c)
+		return
+	}
+
+	// 信息入库
+	err = service.AllServiceApp.UserService.UpdateColumns(commen.GVA_DB, userId, map[string]interface{}{
+		"username": asp.UserName,
+		"email":    asp.Email,
+		"nickname": asp.NickName,
+		"avatar":   asp.Avatar,
+	})
+	if err != nil {
+		commen.GVA_LOG.Error("更新信息失败，请检查！", zap.Error(err))
+		commen.FailedWithMsg(err.Error(), c)
+		return
+	}
+	commen.OKWithMsg("更新信息成功", c)
+}
