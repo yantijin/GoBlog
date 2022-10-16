@@ -6,7 +6,7 @@
 
 * :white_check_mark: GIN
 * :white_check_mark: GORM-> 数据库
-* JWT-GO 鉴权
+* :white_check_mark: JWT-GO 鉴权
 * Casbin->权限管理
 * :white_check_mark: Zap->日志管理
 * :white_check_mark: Viper->配置读取
