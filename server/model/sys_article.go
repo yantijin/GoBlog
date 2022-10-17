@@ -7,7 +7,7 @@ type Article struct {
 	UserId          int64  `gorm:"index:article_user_id" json:"userId"`               // 文章所属用户的ID
 	Title           string `gorm:"size:128;not null" json:"title""`                   // 题目
 	Content         string `gorm:"type:longtext;not null" json:"content"`             // 文章内容
-	ViewCount       int64  `gotm:"not null; index: idx_view_count" json:"viewCount"`  // 文章浏览次数
+	ViewCount       int64  `gorm:"not null; index: idx_view_count" json:"viewCount"`  // 文章浏览次数
 	ContentType     string `gorm:"type:varchar(32);not null" json:"contentType"`      // 内容类型：markdown还是html
 	LikeCount       int64  `gorm:"not null;default:0" json:"likeCount"`               // 评论点赞人数
 	CommentCount    int64  `gorm:"not null;default:0" json:"commentCount"`            // 文章被人评论的次数
