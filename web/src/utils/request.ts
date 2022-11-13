@@ -97,3 +97,4 @@ service.interceptors.response.use(
     return error;
   }
 );
+export default service;
