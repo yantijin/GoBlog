@@ -5,15 +5,9 @@
   用户登录，登出
 */
 
+import { UserInfo } from "@/model/user";
 import { defineStore } from "pinia";
 import { ref } from "vue";
-
-interface UserInfo {
-  uuid: string;
-  nickname: string;
-  avatar: string;
-  id: string;
-}
 
 export const useUserStore = defineStore("user", () => {
   const userInfo = ref<UserInfo>({
