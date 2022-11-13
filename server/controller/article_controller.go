@@ -73,7 +73,8 @@ func (ac *ArticleController) PostPublishArticle(c *gin.Context) {
 		commen.FailedWithMsg(err.Error(), c)
 	}
 	// 入库之后，给出成功的请求
-	commen.OkWithDetailed(article, "发表文章成功", c)
+	response := render.BuildArticle(&article)
+	commen.OkWithDetailed(response, "发表文章成功", c)
 }
 
 // 编辑文章分两步，首先确定用户id和article id，然后获取文章内容，之后再给前端得到对应的数据
