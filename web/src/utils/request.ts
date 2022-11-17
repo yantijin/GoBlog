@@ -4,12 +4,12 @@ import { useUserStore } from "@/pinia/modules/user";
 import { ElMessage, ElMessageBox } from "element-plus";
 
 const service = axios.create({
-  baseURL: import.meta.url,
+  baseURL: import.meta.env.VITE_BASE_API,
   timeout: 99999,
 });
 
 let activeAxios = 0;
-let timer: number;
+let timer: NodeJS.Timeout;
 const showLoading = () => {
   activeAxios++;
   if (timer) {
