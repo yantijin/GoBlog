@@ -16,7 +16,8 @@
     "element-plus": "^2.2.21",
     "mitt": "^3.0.0",
     "pinia": "^2.0.24",
-    "vue": "^3.2.41"
+    "vue": "^3.2.41",
+    "vue-router": "4"
   },
   "devDependencies": {
     "@types/eslint": "^8.4.10",
