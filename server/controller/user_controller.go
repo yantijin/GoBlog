@@ -52,7 +52,7 @@ func (u *UserController) PostLogIn(c *gin.Context) {
 	loginUser, err := service.AllServiceApp.UserService.LogInUser(commen.GVA_DB, &ruser)
 	if err != nil {
 		commen.GVA_LOG.Error("登录失败", zap.Error(err))
-		commen.FailedWithDetailed(loginUser, "登录失败", c)
+		commen.FailedWithDetailed(loginUser, err.Error(), c)
 		return
 	}
 	// 登录成功之后,签发JWT
@@ -71,14 +71,14 @@ func (u *UserController) GetToken(c *gin.Context, user model.User) {
 	token, err := j.GenToken(claims)
 	if err != nil {
 		commen.GVA_LOG.Error("设置登录状态失败", zap.Error(err))
-		commen.FailedWithMsg("设置登录状态失败", c)
+		commen.FailedWithMsg("登录失败", c)
 		return
 	}
 	commen.OkWithDetailed(model.LogInUserResponse{
 		User:      user,
 		Token:     token,
 		ExpiresAt: claims.StandardClaims.ExpiresAt * 1000,
-	}, "设置登录状态成功", c)
+	}, "登录成功", c)
 }
 
 func (u *UserController) ChangePwd(c *gin.Context) {
