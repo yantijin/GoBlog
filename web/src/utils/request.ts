@@ -67,7 +67,7 @@ service.interceptors.response.use(
       ElMessage({
         showClose: true,
         message: response.data.msg || decodeURI(response.headers.msg!),
-        type: "error",
+        type: response.data.code === 7 ? "error" : "success",
       });
       if (response.data.data && response.data.data.reload) {
         userStore.token = "";

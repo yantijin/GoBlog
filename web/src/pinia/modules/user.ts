@@ -18,16 +18,23 @@ export const useUserStore = defineStore("user", () => {
   });
 
   const token = ref(window.localStorage.getItem("token") || "");
-  const setUserInfo = (val: UserInfo) => {
+  const saveUserInfo = (val: UserInfo) => {
     userInfo.value = val;
   };
   const setToken = (val: string) => {
     token.value = val;
   };
+  const isLogIn = ref(false);
+  const setStatus = (val: boolean) => {
+    isLogIn.value = val;
+  };
+
   return {
     userInfo,
     token,
-    setUserInfo,
+    saveUserInfo,
     setToken,
+    isLogIn,
+    setStatus,
   };
 });
