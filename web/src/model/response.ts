@@ -3,7 +3,7 @@ export interface UserInfoData {
   ID: number;
   NickName: string;
   Avatar: string;
-  CreateTime: string;
+  CreateTime: number;
 }
 
 export interface UserResponse {
