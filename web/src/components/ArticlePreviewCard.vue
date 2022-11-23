@@ -48,7 +48,7 @@
 </template>
 
 <script lang="ts" setup>
-// import { ArticleResponse } from "@/model/response";
+import { ArticleResponse } from "@/model/response";
 import { computed } from "vue";
 import { RouterLink } from "vue-router";
 import { View, ChatDotRound, CaretTop } from "@element-plus/icons-vue";
@@ -56,36 +56,38 @@ import { View, ChatDotRound, CaretTop } from "@element-plus/icons-vue";
 interface articlesProps {
   articles: any[];
 }
-
-const props = withDefaults(defineProps<articlesProps>(), {
-  // articles: () => [] as any[],
-  articles: () => {
-    return [
-      {
-        ArticleId: 1,
-        Title: "测试",
-        Content: "测试1",
-        ViewCount: 1,
-        CreateTime: 100,
-        UserInfo: { ID: 1, NickName: "小白", Avatar: "", CreateTime: 0 },
-        LikeCount: 4,
-        CommentCount: 10,
-        CommnetTime: 30,
-      },
-      {
-        ArticleId: 2,
-        Title: "测试2",
-        Content: "测试2",
-        ViewCount: 1,
-        CreateTime: 100,
-        UserInfo: { ID: 1, NickName: "小白", Avatar: "", CreateTime: 0 },
-        LikeCount: 4,
-        CommentCount: 10,
-        CommnetTime: 30,
-      },
-    ];
-  },
-});
+const props = defineProps<{
+  articles: ArticleResponse[];
+}>();
+// const props = withDefaults(defineProps<articlesProps>(), {
+//   // articles: () => [] as any[],
+//   articles: () => {
+//     return [
+//       {
+//         ArticleId: 1,
+//         Title: "测试",
+//         Content: "测试1",
+//         ViewCount: 1,
+//         CreateTime: 100,
+//         UserInfo: { ID: 1, NickName: "小白", Avatar: "", CreateTime: 0 },
+//         LikeCount: 4,
+//         CommentCount: 10,
+//         CommnetTime: 30,
+//       },
+//       {
+//         ArticleId: 2,
+//         Title: "测试2",
+//         Content: "测试2",
+//         ViewCount: 1,
+//         CreateTime: 100,
+//         UserInfo: { ID: 1, NickName: "小白", Avatar: "", CreateTime: 0 },
+//         LikeCount: 4,
+//         CommentCount: 10,
+//         CommnetTime: 30,
+//       },
+//     ];
+//   },
+// });
 
 const format = computed(val => {
   return (val: any) => {

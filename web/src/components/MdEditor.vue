@@ -17,6 +17,7 @@ interface MdProps {
   isPin: boolean;
   isHideTools: boolean;
   theme: "dark" | "classic";
+  placeholder: string;
 }
 
 const props = withDefaults(defineProps<MdProps>(), {
@@ -27,6 +28,7 @@ const props = withDefaults(defineProps<MdProps>(), {
   isPin: false, // 是否固定工具栏
   isHideTools: false, // 是否隐藏工具栏
   theme: "dark", // 主题：dark, classic
+  placeholder: "",
 });
 
 const vditor = ref<Vditor | null>(null);
@@ -48,6 +50,7 @@ onMounted(() => {
       enable: false,
     },
     mode: props.mode,
+    placeholder: props.placeholder,
     // TODO: 后期配置MdEditor的功能：菜单等等，参考 https://ld246.com/article/1549638745630#API
   });
 });
