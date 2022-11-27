@@ -3,42 +3,47 @@
   <div
     v-for="comment in props.comments"
     :key="comment.CommentId"
-    class="comment-container"
+    class="comment"
   >
+    <!-- <div class=""> -->
     <!-- 头像， NickName, 发布时间在右侧, 评论内容， 下方： 点赞数目，评论数目 -->
-    <div class="comment-title">
-      <div class="comment-item-left">
-        <el-avatar
-          :src="comment.UserInfo.Avatar"
-          size="40"
-          class="avatar"
-        ></el-avatar>
+    <el-card class="comment-container">
+      <div class="comment-title">
+        <div class="comment-item-left">
+          <el-avatar
+            :src="comment.UserInfo.Avatar"
+            size="40"
+            class="avatar"
+          ></el-avatar>
+        </div>
+        <div class="comment-item-avatar">
+          <router-link :to="'/user/' + comment.UserInfo.ID" class="user-info">
+            {{ comment.UserInfo.NickName }}</router-link
+          >
+        </div>
+        <div class="comment-time">
+          <time>{{ comment.CreateTime }}</time>
+        </div>
       </div>
-      <div class="comment-item-avatar">
-        <router-link :to="'/user/' + comment.UserInfo.ID" class="user-info">
-          {{ comment.UserInfo.NickName }}</router-link
-        >
-      </div>
-      <div class="comment-time">
-        <time>{{ comment.CreateTime }}</time>
-      </div>
-    </div>
 
-    <div class="comment-content">
-      <div v-html="comment.Content"></div>
-    </div>
-    <div class="comment-actions">
-      <span>
-        <el-icon><CaretTop /></el-icon> &nbsp;{{ comment.LikeCount }}
-      </span>
-      &nbsp;
-      <span
-        ><el-icon @click="switchReply(comment)"><ChatDotRound /></el-icon></span
-      >&nbsp;{{ comment.CommentCount }}
-    </div>
-    <div v-if="reply.commentId == comment.CommentId">
-      <Comment placeholder=""></Comment>
-    </div>
+      <div class="comment-content">
+        <div v-html="comment.Content"></div>
+      </div>
+      <div class="comment-actions">
+        <span>
+          <el-icon><CaretTop /></el-icon> &nbsp;{{ comment.LikeCount }}
+        </span>
+        &nbsp;
+        <span
+          ><el-icon @click="switchReply(comment)"
+            ><ChatDotRound /></el-icon></span
+        >&nbsp;{{ comment.CommentCount }}
+      </div>
+      <div v-if="reply.commentId == comment.CommentId">
+        <Comment placeholder=""></Comment>
+      </div>
+    </el-card>
+    <!-- </div> -->
   </div>
 </template>
 
@@ -109,12 +114,13 @@ const props = withDefaults(
 
 <style>
 .comment-container {
-  width: 70vw;
-  border: 2px solid white;
-  /* display: flex; */
-  padding-top: 3px;
-  margin-top: 15px;
+  padding: 5px 0px;
+  border-radius: 3px;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  /* background-color: white; */
 }
+
 .comment-title {
   text-align: left;
   display: flex;
@@ -137,7 +143,7 @@ const props = withDefaults(
 }
 
 .user-info {
-  color: white;
+  color: black;
   font-weight: bold;
   font-weight: 600;
   font-size: 16px;

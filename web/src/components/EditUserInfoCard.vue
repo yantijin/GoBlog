@@ -1,29 +1,33 @@
 <template>
-  <el-form class="el-form" label-width="120px">
-    <el-form-item label="头像" style="margin-bottom: 0px">
-      <el-upload
-        class="avatar-uploader"
-        :action="uploadUrl"
-        accept=".jpg,.png,.jpeg"
-        show-file-list="false"
-        :on-success="handleAvatarSuccess"
-        :before-upload="beforeAvatarUpload"
-      >
-        <el-avatar v-if="avator" :src="avator" size="100" />
-        <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
-      </el-upload>
-    </el-form-item>
-    <el-form-item label="用户名">
-      <el-input />
-    </el-form-item>
-    <el-form-item label="昵称">
-      <el-input />
-    </el-form-item>
-    <el-form-item label="邮箱地址">
-      <el-input />
-    </el-form-item>
-  </el-form>
-  <el-button type="primary" id="btn">保存</el-button>
+  <el-card class="edit-container">
+    <div class="form-container">
+      <el-form class="el-form" label-width="120px">
+        <el-form-item label="头像" style="margin-bottom: 0px">
+          <el-upload
+            class="avatar-uploader"
+            :action="uploadUrl"
+            accept=".jpg,.png,.jpeg"
+            show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload"
+          >
+            <el-avatar v-if="avator" :src="avator" size="100" />
+            <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+          </el-upload>
+        </el-form-item>
+        <el-form-item label="用户名">
+          <el-input />
+        </el-form-item>
+        <el-form-item label="昵称">
+          <el-input />
+        </el-form-item>
+        <el-form-item label="邮箱地址">
+          <el-input />
+        </el-form-item>
+      </el-form>
+    </div>
+    <el-button type="primary" id="btn">保存</el-button>
+  </el-card>
 </template>
 
 <script setup lang="ts">
@@ -53,7 +57,7 @@ const beforeAvatarUpload: UploadProps["beforeUpload"] = rawFile => {
 </script>
 
 <style>
-.el-form {
+.edit-container {
   width: 70vw;
 }
 .avatar-uploader {
@@ -62,6 +66,23 @@ const beforeAvatarUpload: UploadProps["beforeUpload"] = rawFile => {
 
 .el-form .el-form-item__label {
   font-size: 16px;
+}
+
+.el-form {
+  margin: auto;
+  text-align: center;
+  border: 3px solid rgb(194, 189, 189);
+}
+
+.el-form-item {
+  margin-bottom: 20px;
+  margin-top: 5px;
+  margin-right: 10px;
+}
+
+.form-container {
+  width: 50%;
+  margin: auto;
 }
 
 #btn {

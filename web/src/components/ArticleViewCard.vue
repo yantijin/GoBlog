@@ -16,7 +16,21 @@
       </div>
     </template>
     <div v-html="article.Content" class="content"></div>
+    <hr />
+    <div class="end-actions">
+      <el-button text @click="handleClick">
+        <el-icon><Edit /></el-icon>
+        <span>回复</span>
+      </el-button>
+      <el-button text>
+        <el-icon> <CaretTop /></el-icon>
+        <span> 点赞 </span>
+      </el-button>
+    </div>
   </el-card>
+  <div v-if="replyMain">
+    <Comment placeholder=""></Comment>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -26,6 +40,19 @@
 
 import { ArticleResponse } from "@/model/response";
 import { RouterLink } from "vue-router";
+import { Edit, CaretTop } from "@element-plus/icons-vue";
+import Comment from "@/components/Comment.vue";
+import { ref } from "vue";
+
+const replyMain = ref(false);
+
+const handleClick = () => {
+  if (replyMain.value === false) {
+    replyMain.value = true;
+  } else {
+    replyMain.value = false;
+  }
+};
 
 const article: ArticleResponse = {
   ArticleId: 1,
@@ -68,5 +95,10 @@ const article: ArticleResponse = {
 .content {
   text-align: left;
   font-size: 16px;
+}
+
+.end-actions {
+  display: flex;
+  margin-bottom: 0px;
 }
 </style>

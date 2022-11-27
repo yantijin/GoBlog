@@ -4,21 +4,29 @@
     <el-menu
       :default-active="activeIndex"
       mode="horizontal"
-      background-color="grey"
+      background-color="white"
       :ellipsis="false"
+      @select="handleSelect"
     >
-      <div id="logo"><el-menu-item index="origin">LOGO</el-menu-item></div>
+      <div id="logo">
+        <el-menu-item index="home">
+          <!-- <img src="../assets/logo.jpg" /> -->
+          <el-avatar :src="logoImage" :size="55" shape="square"></el-avatar>
+        </el-menu-item>
+      </div>
       <div class="flex-grow" />
 
       <el-sub-menu index="publish">
         <template #title>发表</template>
         <el-menu-item index="publishArticle">发文章</el-menu-item>
       </el-sub-menu>
-      <el-dropdown v-if="userStore.isLogIn" id="dp">
+      <el-dropdown v-if="true" id="dp">
         <el-avatar shape="square" :src="squareUrl" />
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item> 个人中心</el-dropdown-item>
+            <el-dropdown-item @click="router.push('/user/1')">
+              个人中心</el-dropdown-item
+            >
           </el-dropdown-menu>
         </template>
       </el-dropdown>
@@ -43,13 +51,30 @@
 import { ref, reactive, watch } from "vue";
 import RegisterAndLogInVue from "@/components/RegisterAndLogIn.vue";
 import { useUserStore } from "@/pinia/modules/user";
+import logoImg from "@/assets/logo.jpg";
+import { useRouter } from "vue-router";
 
 const activeIndex = ref("origin");
+const logoImage = ref(logoImg);
+const router = useRouter();
 
 const states = reactive({
   visible: false,
   flag: false,
 });
+
+const handleSelect = (
+  index: string,
+  indexPath: string,
+  routeResult: string
+) => {
+  console.log(index, indexPath, routeResult);
+  if (index === "home") {
+    router.push("/home");
+  } else if (index === "publishArticle") {
+    router.push("/article/create");
+  }
+};
 
 const loginBtn = () => {
   states.visible = true;
@@ -77,7 +102,7 @@ watch(
   flex-grow: 1;
 }
 .nav {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;

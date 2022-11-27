@@ -56,38 +56,38 @@ import { View, ChatDotRound, CaretTop } from "@element-plus/icons-vue";
 interface articlesProps {
   articles: any[];
 }
-const props = defineProps<{
-  articles: ArticleResponse[];
-}>();
-// const props = withDefaults(defineProps<articlesProps>(), {
-//   // articles: () => [] as any[],
-//   articles: () => {
-//     return [
-//       {
-//         ArticleId: 1,
-//         Title: "测试",
-//         Content: "测试1",
-//         ViewCount: 1,
-//         CreateTime: 100,
-//         UserInfo: { ID: 1, NickName: "小白", Avatar: "", CreateTime: 0 },
-//         LikeCount: 4,
-//         CommentCount: 10,
-//         CommnetTime: 30,
-//       },
-//       {
-//         ArticleId: 2,
-//         Title: "测试2",
-//         Content: "测试2",
-//         ViewCount: 1,
-//         CreateTime: 100,
-//         UserInfo: { ID: 1, NickName: "小白", Avatar: "", CreateTime: 0 },
-//         LikeCount: 4,
-//         CommentCount: 10,
-//         CommnetTime: 30,
-//       },
-//     ];
-//   },
-// });
+// const props = defineProps<{
+//   articles: ArticleResponse[];
+// }>();
+const props = withDefaults(defineProps<articlesProps>(), {
+  // articles: () => [] as any[],
+  articles: () => {
+    return [
+      {
+        ArticleId: 1,
+        Title: "这是测试的第一个文章标题",
+        Content: "测试1",
+        ViewCount: 1,
+        CreateTime: 100,
+        UserInfo: { ID: 1, NickName: "小白", Avatar: "", CreateTime: 0 },
+        LikeCount: 4,
+        CommentCount: 10,
+        CommnetTime: 30,
+      },
+      {
+        ArticleId: 2,
+        Title: "这是测试的第二个文章标题",
+        Content: "测试2",
+        ViewCount: 1,
+        CreateTime: 100,
+        UserInfo: { ID: 1, NickName: "小白", Avatar: "", CreateTime: 0 },
+        LikeCount: 4,
+        CommentCount: 10,
+        CommnetTime: 30,
+      },
+    ];
+  },
+});
 
 const format = computed(val => {
   return (val: any) => {
@@ -98,17 +98,16 @@ const format = computed(val => {
 
 <style>
 .article-preview-container {
-  width: 80vw;
+  /* width: 70vw; */
   padding: 0px;
   margin-top: 2px;
 }
 
 .article-item {
-  padding: 10px 5px;
+  padding: 0px 0px;
   border-radius: 3px;
   line-height: 24px;
   margin-bottom: 0px;
-  display: flex;
 }
 
 .article-item-main {
@@ -121,7 +120,7 @@ const format = computed(val => {
 .article-title {
   font-size: 18px;
   line-height: 30px;
-  font-weight: 500;
+  font-weight: bold;
   color: black;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -132,7 +131,7 @@ const format = computed(val => {
   display: flex;
   align-items: center;
   font-size: 13px;
-  padding-top: 3px;
+  padding-top: 10px;
 }
 
 .article-meta-item {
@@ -141,11 +140,15 @@ const format = computed(val => {
 
 .article-author {
   font-weight: bold;
-  padding: 0 3px;
+  padding: 0 6px;
   color: black;
 }
 
 .article-meta-right {
-  margin-left: 10px;
+  margin-left: 20px;
+}
+
+.el-card__body {
+  padding: 10px 10px 5px 10px;
 }
 </style>

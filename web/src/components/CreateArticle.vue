@@ -1,7 +1,7 @@
 <template>
   <el-card class="article-card">
     <template #header>
-      <h2 class="submit">发文章</h2>
+      <span class="title">发文章</span>
     </template>
 
     <div>
@@ -30,9 +30,12 @@ const title = ref("");
 </script>
 
 <style>
-.submit {
+.title {
   display: flex;
   margin-bottom: 0px;
+  font-size: 40px;
+  font-weight: bold;
+  margin-top: 20px;
 }
 
 .article-card {

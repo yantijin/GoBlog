@@ -3,7 +3,9 @@
     <template #header>
       <div class="card-header">
         <span>个人资料</span>
-        <el-button class="button" text>编辑资料</el-button>
+        <el-button class="button" text @click="router.push('/user/edit')"
+          >编辑资料</el-button
+        >
       </div>
     </template>
     <el-form label-width="60px">
@@ -24,6 +26,7 @@
 
 <script lang="ts" setup>
 import { UserResponse } from "@/model/response";
+import { useRouter } from "vue-router";
 
 const props: UserResponse = {
   UserName: "yantijin",
@@ -31,6 +34,8 @@ const props: UserResponse = {
   Email: "yantijin@163.com",
   Avatar: "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png",
 };
+
+const router = useRouter();
 </script>
 
 <style>
