@@ -20,7 +20,7 @@
         <template #title>发表</template>
         <el-menu-item index="publishArticle">发文章</el-menu-item>
       </el-sub-menu>
-      <el-dropdown v-if="true" id="dp">
+      <el-dropdown v-if="userStore.isLogIn" id="dp">
         <el-avatar shape="square" :src="squareUrl" />
         <template #dropdown>
           <el-dropdown-menu>
