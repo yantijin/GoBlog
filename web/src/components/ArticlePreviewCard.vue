@@ -20,7 +20,7 @@
         <div class="article-meta-left">
           <div class="article-meta-item">
             <router-link
-              :to="'/user' + article.UserInfo.ID"
+              :to="'/user/' + article.UserInfo.ID"
               class="article-author"
             >
               <span>

@@ -20,7 +20,7 @@
         <template #title>发表</template>
         <el-menu-item index="publishArticle">发文章</el-menu-item>
       </el-sub-menu>
-      <el-dropdown v-if="userStore.isLogIn" id="dp">
+      <el-dropdown v-if="userStore.userInfo != ''" id="dp">
         <el-avatar shape="square" :src="squareUrl" />
         <template #dropdown>
           <el-dropdown-menu>
@@ -33,7 +33,10 @@
 
       <div id="second">
         <el-menu-item index="login">
-          <el-button @click="loginBtn" type="primary" v-if="!userStore.isLogIn"
+          <el-button
+            @click="loginBtn"
+            type="primary"
+            v-if="userStore.userInfo == ''"
             >登录</el-button
           >
           <RegisterAndLogInVue
@@ -48,7 +51,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, watch } from "vue";
+import { ref, reactive, watch, computed } from "vue";
 import RegisterAndLogInVue from "@/components/RegisterAndLogIn.vue";
 import { useUserStore } from "@/pinia/modules/user";
 import logoImg from "@/assets/logo.jpg";
@@ -85,16 +88,18 @@ const handleClose = (val: boolean) => {
 };
 
 const userStore = useUserStore();
-const squareUrl = ref(
-  "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png"
-);
+// const squareUrl = ref(
+//   "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png"
+// );
 
-watch(
-  () => userStore.userInfo,
-  (val, oldval) => {
-    squareUrl.value = userStore.userInfo.avatar;
-  }
-);
+// watch(
+//   () => userStore.userInfo,
+//   (val, oldval) => {
+//     squareUrl.value = userStore.userInfo.avatar;
+//   }
+// );
+
+const squareUrl = computed(() => userStore.userInfo.avatar);
 </script>
 
 <style>

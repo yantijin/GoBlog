@@ -68,11 +68,11 @@ const beforeAvatarUpload: UploadProps["beforeUpload"] = rawFile => {
   font-size: 16px;
 }
 
-.el-form {
+/* .el-form {
   margin: auto;
   text-align: center;
   border: 3px solid rgb(194, 189, 189);
-}
+} */
 
 .el-form-item {
   margin-bottom: 20px;
@@ -83,6 +83,7 @@ const beforeAvatarUpload: UploadProps["beforeUpload"] = rawFile => {
 .form-container {
   width: 50%;
   margin: auto;
+  border: 3px solid rgb(194, 189, 189);
 }
 
 #btn {

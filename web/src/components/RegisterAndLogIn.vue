@@ -145,7 +145,7 @@ const handleLogIn = async () => {
       // 请求成功，用户登录,保存用户信息和token
       userStore.saveUserInfo(data.data.user);
       userStore.setToken(data.data.token);
-      userStore.setStatus(true);
+      // userStore.setStatus(true);
       ElMessage({
         message: "登录成功，即将跳转",
         type: "success",
@@ -156,7 +156,6 @@ const handleLogIn = async () => {
     loadingIns.value.close();
   }
   loadingIns.value.close();
-  
 };
 
 const handleSignUp = async () => {
@@ -213,7 +212,7 @@ const handleSignUp = async () => {
       if (data.code === 0) {
         userStore.setToken(data.data.token);
         userStore.saveUserInfo(data.data.user);
-        userStore.setStatus(true);
+        // userStore.setStatus(true);
         emits("close", false);
       }
     }
