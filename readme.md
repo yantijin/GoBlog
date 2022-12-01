@@ -11,11 +11,17 @@
 * :white_check_mark: Zap->日志管理
 * :white_check_mark: Viper->配置读取
 * redis-go 缓存
+* :white_check_mark: lute markdown引擎
 
 ### 前端
 
-* Vue-cli [VUE 3.x]
-* Element UI
+* :white_check_mark: Vite 脚手架，快速构建
+* :white_check_mark: vue3 前端框架
+* :white_check_mark: Element-Plus UI UI库
+* :white_check_mark: Vue-Router 前端路由
+* :white_check_mark: Pinia 状态管理器
+* :white_check_mark: Mitt 事件触发器
+* :white_check_mark: vditor markdown编辑器
 
 ## 主要功能
 
