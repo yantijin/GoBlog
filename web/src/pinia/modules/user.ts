@@ -7,34 +7,47 @@
 
 import { UserInfo } from "@/model/user";
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 
 export const useUserStore = defineStore("user", () => {
-  const userInfo = ref<UserInfo>({
-    uuid: "",
-    nickname: "",
-    avatar: "",
-    id: "",
-  });
+  // const userInfo = ref<UserInfo>({
+  //   uuid: "",
+  //   nickname: "",
+  //   avatar: "",
+  //   id: "",
+  // });
+
+  const userInfo = ref(
+    JSON.parse(window.localStorage.getItem("userInfo")) || ""
+  );
 
   const token = ref(window.localStorage.getItem("token") || "");
   const saveUserInfo = (val: UserInfo) => {
     userInfo.value = val;
+    window.localStorage.setItem("userInfo", JSON.stringify(val));
   };
   const setToken = (val: string) => {
     token.value = val;
   };
-  const isLogIn = ref(false);
-  const setStatus = (val: boolean) => {
-    isLogIn.value = val;
-  };
+  // const isLogIn = ref(false);
+  // const setStatus = (val: boolean) => {
+  //   isLogIn.value = val;
+  // };
+
+  watch(
+    () => token.value,
+    () => {
+      window.localStorage.setItem("token", token.value);
+      console.log(window.localStorage);
+    }
+  );
 
   return {
     userInfo,
     token,
     saveUserInfo,
     setToken,
-    isLogIn,
-    setStatus,
+    // isLogIn,
+    // setStatus,
   };
 });
