@@ -30,11 +30,14 @@ func BuildArticle(article *model.Article) *model.ArticleResponse {
 		commen.GVA_LOG.Error("article信息有误，无法获取对应user信息，请检查！", zap.Error(err))
 	}
 
-	rsp.UserInfo = &model.UserInfo{
-		ID:         article.UserId,
-		NickName:   user.NickName,
-		Avatar:     user.Avatar,
-		CreateTime: user.CreatedAt.Unix(),
+	rsp.UserInfo = &model.UserResponse{
+		ID:       article.UserId,
+		NickName: user.NickName,
+		Avatar:   user.Avatar,
+		Email:    user.Email,
+		UserName: user.UserName,
+		UUID:     user.UUID,
+		// CreateTime: user.CreatedAt.Unix(),
 	}
 
 	// 对于Content，需要根据ContentType来将content转换为对应类型

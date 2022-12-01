@@ -29,12 +29,20 @@ func (u *UserController) PostSignUp(c *gin.Context) {
 		Avatar:   user.Avatar,
 	}
 	regUserInfo, err := service.AllServiceApp.UserService.RegisterUser(commen.GVA_DB, ruser)
+	rsp := model.UserResponse{
+		UserName: regUserInfo.UserName,
+		NickName: regUserInfo.NickName,
+		Email:    regUserInfo.Email,
+		Avatar:   regUserInfo.Avatar,
+		ID:       regUserInfo.ID,
+		UUID:     regUserInfo.UUID,
+	}
 	if err != nil {
 		commen.GVA_LOG.Error("注册失败", zap.Error(err))
-		commen.FailedWithDetailed(regUserInfo, "注册失败", c)
+		commen.FailedWithDetailed(rsp, "注册失败", c)
 		return
 	}
-	commen.OkWithDetailed(regUserInfo, "注册成功", c)
+	commen.OkWithDetailed(rsp, "注册成功", c)
 }
 
 func (u *UserController) PostLogIn(c *gin.Context) {
@@ -50,16 +58,24 @@ func (u *UserController) PostLogIn(c *gin.Context) {
 		Password: user.Password,
 	}
 	loginUser, err := service.AllServiceApp.UserService.LogInUser(commen.GVA_DB, &ruser)
+	rsp := model.UserResponse{
+		UserName: loginUser.UserName,
+		NickName: loginUser.NickName,
+		Email:    loginUser.Email,
+		Avatar:   loginUser.Avatar,
+		ID:       loginUser.ID,
+		UUID:     loginUser.UUID,
+	}
 	if err != nil {
 		commen.GVA_LOG.Error("登录失败", zap.Error(err))
-		commen.FailedWithDetailed(loginUser, err.Error(), c)
+		commen.FailedWithDetailed(rsp, err.Error(), c)
 		return
 	}
 	// 登录成功之后,签发JWT
-	u.GetToken(c, *loginUser)
+	u.GetToken(c, *loginUser, &rsp)
 }
 
-func (u *UserController) GetToken(c *gin.Context, user model.User) {
+func (u *UserController) GetToken(c *gin.Context, user model.User, rsp *model.UserResponse) {
 	j := utils.JWT{SigningKey: []byte(commen.GVA_CONFIG.JWT.SigningKey)}
 	baseClaims := model.BaseClaims{
 		UUID:     user.UUID,
@@ -75,7 +91,7 @@ func (u *UserController) GetToken(c *gin.Context, user model.User) {
 		return
 	}
 	commen.OkWithDetailed(model.LogInUserResponse{
-		User:      user,
+		User:      *rsp,
 		Token:     token,
 		ExpiresAt: claims.StandardClaims.ExpiresAt * 1000,
 	}, "登录成功", c)
@@ -114,6 +130,8 @@ func (u *UserController) GetEditUserInfo(c *gin.Context) {
 		NickName: user.NickName,
 		Email:    user.Email,
 		Avatar:   user.Avatar,
+		ID:       user.ID,
+		UUID:     user.UUID,
 	}
 	commen.OkWithDetailed(&usp, "获取用户信息成功", c)
 }
@@ -121,7 +139,7 @@ func (u *UserController) GetEditUserInfo(c *gin.Context) {
 // 对用户的信息进行更改，需要首先经过jwt的验证
 func (u *UserController) PostEditUserInfo(c *gin.Context) {
 	userId := utils.GetUserID(c)
-	var asp model.UserResponse
+	var asp model.UserRequest
 	err := c.ShouldBindJSON(&asp)
 	if err != nil {
 		commen.GVA_LOG.Error("绑定数据失败，请检查", zap.Error(err))

@@ -36,9 +36,9 @@ type ChangePassword struct {
 }
 
 type LogInUserResponse struct {
-	User      User   `json:"user"`
-	Token     string `json:"token"`
-	ExpiresAt int64  `json:"expiresAt"`
+	User      UserResponse `json:"user"`
+	Token     string       `json:"token"`
+	ExpiresAt int64        `json:"expiresAt"`
 }
 
 // 响应时的给前端的用户信息
@@ -49,9 +49,18 @@ type UserInfo struct {
 	CreateTime int64  `json:"createTime"`
 }
 
-type UserResponse struct {
+type UserRequest struct {
 	UserName string `json:"userName"`
 	NickName string `json:"nickname"`
 	Email    string `json:"email"`
 	Avatar   string `json:"avatar"`
+}
+
+type UserResponse struct {
+	UserName string    `json:"userName"`
+	NickName string    `json:"nickname"`
+	Email    string    `json:"email"`
+	Avatar   string    `json:"avatar"`
+	ID       int64     `json:"id"`
+	UUID     uuid.UUID `json:"uuid"`
 }

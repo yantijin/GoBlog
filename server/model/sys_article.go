@@ -35,15 +35,15 @@ type UserLike struct {
 
 // 响应时，尽量不要把全部的article信息返回，也可以加上其他信息，比如user，tags等等
 type ArticleResponse struct {
-	ArticleId    int64     `json:"articleId"`
-	Title        string    `json:"title"`
-	Content      string    `json:"content"` // 此时已全部转化为html的格式
-	ViewCount    int64     `json:"viewCount"`
-	CreateTime   int64     `json:"createTime"`
-	UserInfo     *UserInfo `json:"user"`
-	LikeCount    int64     `json:"likeCount"`
-	CommentCount int64     `json:"commenCount"` // 文章当前的评论数
-	CommentTime  int64     `json:"commentTime"` // 最后一次评论的时间
+	ArticleId    int64         `json:"articleId"`
+	Title        string        `json:"title"`
+	Content      string        `json:"content"` // 此时已全部转化为html的格式
+	ViewCount    int64         `json:"viewCount"`
+	CreateTime   int64         `json:"createTime"`
+	UserInfo     *UserResponse `json:"user"`
+	LikeCount    int64         `json:"likeCount"`
+	CommentCount int64         `json:"commenCount"` // 文章当前的评论数
+	CommentTime  int64         `json:"commentTime"` // 最后一次评论的时间
 }
 
 type ArticleRequest struct {
@@ -63,15 +63,15 @@ type ArticleEditRequest struct {
 }
 
 type CommentResponse struct {
-	UserInfo     *UserInfo `json:"user"`
-	EntityType   string    `json:"entityType"`
-	EntityId     int64     `json:"entityId"`
-	CommentId    int64     `json:"commentId"`
-	Content      string    `json:"content"`
-	LikeCount    int64     `json:"likeCount"`
-	CommentCount int64     `json:"commentCount"`
-	CreateTime   int64     `json:"createTime"`
-	Liked        bool      `json:"liked"` // 此评论是否被当前登录用户点赞
+	UserInfo     *UserResponse `json:"user"`
+	EntityType   string        `json:"entityType"`
+	EntityId     int64         `json:"entityId"`
+	CommentId    int64         `json:"commentId"`
+	Content      string        `json:"content"`
+	LikeCount    int64         `json:"likeCount"`
+	CommentCount int64         `json:"commentCount"`
+	CreateTime   int64         `json:"createTime"`
+	Liked        bool          `json:"liked"` // 此评论是否被当前登录用户点赞
 }
 
 type CommentJson struct {
