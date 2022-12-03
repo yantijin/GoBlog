@@ -42,12 +42,12 @@ type LogInUserResponse struct {
 }
 
 // 响应时的给前端的用户信息
-type UserInfo struct {
-	ID         int64  `json:"id"`
-	NickName   string `json:"nickname"`
-	Avatar     string `json:"avatar"`
-	CreateTime int64  `json:"createTime"`
-}
+// type UserInfo struct {
+// 	ID         int64  `json:"id"`
+// 	NickName   string `json:"nickname"`
+// 	Avatar     string `json:"avatar"`
+// 	CreateTime int64  `json:"createTime"`
+// }
 
 type UserRequest struct {
 	UserName string `json:"username"`

@@ -5,6 +5,7 @@ import (
 	"GoLog/model"
 	"GoLog/service"
 	"GoLog/utils"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
@@ -160,4 +161,29 @@ func (u *UserController) PostEditUserInfo(c *gin.Context) {
 		return
 	}
 	commen.OKWithMsg("更新信息成功", c)
+}
+
+// 获取某用户的信息，无需判断是否是当前用户
+func (u *UserController) GetUserInfo(c *gin.Context) {
+	id := c.Param("userId")
+	userId, err := strconv.ParseInt(id, 10, 64)
+	if err != nil {
+		commen.GVA_LOG.Error(err.Error(), zap.Error(err))
+		commen.FailedWithMsg(err.Error(), c)
+	}
+	user, err := service.AllServiceApp.FindUser(commen.GVA_DB, userId)
+	if err != nil {
+		commen.GVA_LOG.Error("验证用户失败，请登录", zap.Error(err))
+		commen.FailedWithMsg(err.Error(), c)
+		return
+	}
+	usp := model.UserResponse{
+		UserName: user.UserName,
+		NickName: user.NickName,
+		Email:    user.Email,
+		Avatar:   user.Avatar,
+		ID:       user.ID,
+		UUID:     user.UUID,
+	}
+	commen.OkWithDetailed(&usp, "获取用户信息成功", c)
 }

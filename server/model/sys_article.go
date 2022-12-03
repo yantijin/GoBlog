@@ -42,8 +42,8 @@ type ArticleResponse struct {
 	CreateTime   int64         `json:"createTime"`
 	UserInfo     *UserResponse `json:"user"`
 	LikeCount    int64         `json:"likeCount"`
-	CommentCount int64         `json:"commenCount"` // 文章当前的评论数
-	CommentTime  int64         `json:"commentTime"` // 最后一次评论的时间
+	CommentCount int64         `json:"commentCount"` // 文章当前的评论数
+	CommentTime  int64         `json:"commentTime"`  // 最后一次评论的时间
 }
 
 type ArticleRequest struct {
