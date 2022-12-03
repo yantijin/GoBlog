@@ -45,7 +45,7 @@ export const changePwd = (data: ChangePwdData) => {
 // @Summary 获取当前登录用户的信息，用于后续编辑
 // @Produce application/json
 // @Router /user/getEditUser [get]
-export const getUserInfo = () => {
+export const editUserInfo = () => {
   return service({
     url: "/user/getEditUser",
     method: "get",
@@ -62,5 +62,16 @@ export const setUserInfo = (data: SetUserInfoData) => {
     url: "user/postEditUser",
     method: "post",
     data: data,
+  });
+};
+
+// @Summary 获取某用户的信息，无需登录
+// @Produce application/json
+// Param data body: model.UserResponse
+// @Router /user/getUserInfo/:userId [get]
+export const getUserInfo = (id: string) => {
+  return service({
+    url: "user/getUserInfo/" + id,
+    method: "get",
   });
 };

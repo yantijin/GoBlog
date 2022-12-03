@@ -9,27 +9,33 @@
       </el-upload>
     </div>
     <el-avatar
-      :user="localUser"
+      :src="props.localUser.avatar"
       :round="true"
       size="large"
       class="profile-avatar"
-    />
+    >
+      <img
+        src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png"
+      />
+    </el-avatar>
     <div class="profile-info">
       <div class="metas">
         <h1 class="nickname">
-          <router-link :to="'/user/' + localUser.id" :key="localUser.id">{{
-            localUser.nickname
-          }}</router-link>
+          <router-link
+            :to="'/user/' + props.localUser.id"
+            :key="props.localUser.id"
+            >{{ localUser.nickname }}</router-link
+          >
         </h1>
-        <div v-if="localUser.nickname" class="description">
+        <div v-if="props.localUser.nickname" class="description">
           <p>{{ localUser.nickname }}</p>
         </div>
       </div>
-      <div class="action-btns">
-        <el-button type="primary">follow</el-button>
+      <div class="action-btns" v-if="userStore.userInfo.id != route.params.id">
+        <el-button type="primary" @click="handleFollow">follow</el-button>
         <!-- <follow-btn
           v-if="!currentUser || currentUser.ID !== localUser.ID"
-          :user-id="localUser.ID"
+          :user-id="props.localUser.ID"
           :followed="followed"
           @onFollowed="onFollowed"
         /> -->
@@ -43,27 +49,58 @@ import { UserInfoData } from "@/model/response";
 import { ref } from "vue";
 import defaultImg from "@/assets/default-user-bg.jpg";
 import { Upload } from "@element-plus/icons-vue";
+import { useRoute } from "vue-router";
+import { useUserStore } from "@/pinia/modules/user";
 
+const route = useRoute();
+const userStore = useUserStore();
 const backgroundImage = ref(defaultImg);
 
-const isOwner = ref(true);
+const isOwner = ref(route.params.id == userStore.userInfo.id);
 
-const localUser: UserInfoData = {
-  nickname: "小白",
-  id: 3,
-  avatar: "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png",
-  email: "yantijin@163.com",
-  username: "yantijin",
-  uuid: "",
-};
+// const props = defineProps<{
+//   localUser: UserInfoData
+// }>();
+const props = withDefaults(defineProps<{ localUser: UserInfoData }>(), {
+  localUser: () => {
+    return {
+      nickname: "小白",
+      id: 3,
+      avatar:
+        "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png",
+      email: "yantijin@163.com",
+      username: "yantijin",
+      uuid: "",
+    };
+  },
+});
 
-const currentUser: UserInfoData = {
-  nickname: "小白",
-  id: 3,
-  avatar: "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png",
-  email: "yantijin@163.com",
-  username: "yantijin",
-  uuid: "",
+// const localUser: UserInfoData = {
+//   nickname: "小白",
+//   id: 3,
+//   avatar: "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png",
+//   email: "yantijin@163.com",
+//   username: "yantijin",
+//   uuid: "",
+// };
+
+// const currentUser: UserInfoData = {
+//   nickname: "小白",
+//   id: 3,
+//   avatar: "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png",
+//   email: "yantijin@163.com",
+//   username: "yantijin",
+//   uuid: "",
+// };
+
+const handleFollow = () => {
+  console.log("hello");
+  console.log(userStore.userInfo);
+  console.log("hello");
+  console.log(route.params.id);
+  console.log(userStore.userInfo.id == route.params.id);
+  // const res = obtainUserInfo;
+  // console.log(res);
 };
 // const followed = ref(false)
 </script>

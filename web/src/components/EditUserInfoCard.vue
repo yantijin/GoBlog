@@ -11,30 +11,50 @@
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
           >
-            <el-avatar v-if="avator" :src="avator" size="100" />
+            <el-avatar
+              v-if="userInfo.avatar != ''"
+              :src="userInfo.avatar"
+              size="100"
+            />
             <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
           </el-upload>
         </el-form-item>
         <el-form-item label="用户名">
-          <el-input />
+          <el-input v-model="userInfo.username" />
         </el-form-item>
         <el-form-item label="昵称">
-          <el-input />
+          <el-input v-model="userInfo.nickname" />
         </el-form-item>
         <el-form-item label="邮箱地址">
-          <el-input />
+          <el-input v-model="userInfo.email" />
         </el-form-item>
       </el-form>
     </div>
-    <el-button type="primary" id="btn">保存</el-button>
+    <el-button type="primary" id="btn" @click="handleChangeInfo"
+      >保存</el-button
+    >
   </el-card>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { UploadProps } from "element-plus";
 import { ElMessage } from "element-plus";
+import { editUserInfo, setUserInfo } from "@/api/api_user";
+import { UserInfoData } from "@/model/response";
+import { useUserStore } from "@/pinia/modules/user";
+import { useRouter } from "vue-router";
 
+const userStore = useUserStore();
+const router = useRouter();
+const userInfo = ref<UserInfoData>({
+  username: "",
+  nickname: "",
+  id: 1,
+  email: "",
+  avatar: "",
+  uuid: "",
+});
 const avator = ref(
   "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png"
 ); //图片显示
@@ -54,6 +74,29 @@ const beforeAvatarUpload: UploadProps["beforeUpload"] = rawFile => {
   }
   return true;
 };
+
+const obtainSelfUserInfo = async () => {
+  const { data } = await editUserInfo();
+  if (data.code == 0) {
+    console.log("获取资料成功");
+    console.log(data.data);
+    return data.data;
+  }
+};
+
+const handleChangeInfo = async () => {
+  const { data } = await setUserInfo(userInfo.value);
+  if (data.code == 0) {
+    // 更新localStorage和userStore
+    userStore.saveUserInfo(userInfo.value);
+    router.push("/user/" + userStore.userInfo.id);
+  }
+};
+
+onMounted(async () => {
+  const uInfo = await obtainSelfUserInfo();
+  userInfo.value = uInfo;
+});
 </script>
 
 <style>

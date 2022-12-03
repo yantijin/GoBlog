@@ -2,16 +2,16 @@
 <template>
   <div
     v-for="article in props.articles"
-    :key="article.ArticleId"
+    :key="article.articleId"
     class="article-item"
   >
     <el-card class="article-preview-container">
       <div class="article-item-main">
         <div class="article-info">
           <router-link
-            :to="'/article/' + article.ArticleId"
+            :to="'/article/' + article.articleId"
             class="article-title"
-            >{{ article.Title }}</router-link
+            >{{ article.title }}</router-link
           >
         </div>
       </div>
@@ -20,27 +20,27 @@
         <div class="article-meta-left">
           <div class="article-meta-item">
             <router-link
-              :to="'/user/' + article.UserInfo.ID"
+              :to="'/user/' + article.user.id"
               class="article-author"
             >
               <span>
-                {{ article.UserInfo.NickName }}
+                {{ article.user.nickname }}
               </span>
             </router-link>
-            <time>发布于 {{ article.CreateTime }}</time>
+            <time>发布于 {{ unix2Date(article.createTime) }}</time>
           </div>
         </div>
 
         <div class="article-meta-right">
           <span
             ><el-icon><View /></el-icon></span
-          >&nbsp;{{ article.ViewCount }}
+          >&nbsp;{{ article.viewCount }}
           <span
             ><el-icon><ChatDotRound /></el-icon></span
-          >&nbsp;{{ article.CommentCount }}
+          >&nbsp;{{ article.commentCount }}
           <span
             ><el-icon><CaretTop /></el-icon></span
-          >&nbsp;{{ article.LikeCount }}
+          >&nbsp;{{ article.likeCount }}
         </div>
       </div>
     </el-card>
@@ -52,42 +52,60 @@ import { ArticleResponse } from "@/model/response";
 import { computed } from "vue";
 import { RouterLink } from "vue-router";
 import { View, ChatDotRound, CaretTop } from "@element-plus/icons-vue";
+import unix2Date from "@/utils/date";
 
-interface articlesProps {
-  articles: any[];
-}
+// interface articlesProps {
+//   articles: any[];
+// }
 // const props = defineProps<{
 //   articles: ArticleResponse[];
 // }>();
-const props = withDefaults(defineProps<articlesProps>(), {
-  // articles: () => [] as any[],
-  articles: () => {
-    return [
-      {
-        ArticleId: 1,
-        Title: "这是测试的第一个文章标题",
-        Content: "测试1",
-        ViewCount: 1,
-        CreateTime: 100,
-        UserInfo: { ID: 1, NickName: "小白", Avatar: "", CreateTime: 0 },
-        LikeCount: 4,
-        CommentCount: 10,
-        CommnetTime: 30,
-      },
-      {
-        ArticleId: 2,
-        Title: "这是测试的第二个文章标题",
-        Content: "测试2",
-        ViewCount: 1,
-        CreateTime: 100,
-        UserInfo: { ID: 1, NickName: "小白", Avatar: "", CreateTime: 0 },
-        LikeCount: 4,
-        CommentCount: 10,
-        CommnetTime: 30,
-      },
-    ];
-  },
-});
+const props = withDefaults(
+  defineProps<{ articles: Array<ArticleResponse> }>(),
+  {
+    // articles: () => [] as any[],
+    articles: () => {
+      return [
+        {
+          articleId: 1,
+          title: "这是测试的第一个文章标题",
+          content: "测试1",
+          viewCount: 1,
+          createTime: 100,
+          user: {
+            id: 1,
+            nickname: "小白",
+            avatar: "",
+            email: "yantijn@163.com",
+            username: "yantijin",
+            uuid: "",
+          },
+          likeCount: 4,
+          commentCount: 10,
+          commentTime: 30,
+        },
+        {
+          articleId: 2,
+          title: "这是测试的第二个文章标题",
+          content: "测试2",
+          viewCount: 1,
+          createTime: 100,
+          user: {
+            id: 1,
+            nickname: "小白",
+            avatar: "",
+            email: "yantijn@163.com",
+            username: "yantijin",
+            uuid: "",
+          },
+          likeCount: 4,
+          commentCount: 10,
+          commentTime: 30,
+        },
+      ];
+    },
+  }
+);
 
 const format = computed(val => {
   return (val: any) => {

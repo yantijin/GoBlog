@@ -5,7 +5,7 @@
   用户登录，登出
 */
 
-import { UserInfo } from "@/model/user";
+import { UserResponse } from "@/model/response";
 import { defineStore } from "pinia";
 import { ref, watch } from "vue";
 
@@ -22,7 +22,7 @@ export const useUserStore = defineStore("user", () => {
   );
 
   const token = ref(window.localStorage.getItem("token") || "");
-  const saveUserInfo = (val: UserInfo) => {
+  const saveUserInfo = (val: UserResponse) => {
     userInfo.value = val;
     window.localStorage.setItem("userInfo", JSON.stringify(val));
   };

@@ -21,10 +21,14 @@
         <el-menu-item index="publishArticle">发文章</el-menu-item>
       </el-sub-menu>
       <el-dropdown v-if="userStore.userInfo != ''" id="dp">
-        <el-avatar shape="square" :src="squareUrl" />
+        <div class="avatar">
+          <el-avatar shape="square" :src="squareUrl" />
+        </div>
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item @click="router.push('/user/1')">
+            <el-dropdown-item
+              @click="router.push('/user/' + userStore.userInfo.id)"
+            >
               个人中心</el-dropdown-item
             >
             <el-dropdown-item @click="router.push('/user/edit')"
@@ -123,6 +127,13 @@ const handleSingout = () => {
   left: 0;
   width: 100%;
 }
+
+/* .avatar {
+  border: 2px solid grey;
+  border-radius: 2px;
+  box-shadow: 5px 3px 1px #888888;
+} */
+
 #logo {
   margin-left: 15%;
 }

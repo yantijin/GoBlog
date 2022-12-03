@@ -1,5 +1,5 @@
 // 用户相关的前端响应体
-export interface UserInfoData {
+export type UserInfoData = {
   id: number;
   nickname: string;
   username: string;
@@ -7,17 +7,17 @@ export interface UserInfoData {
   email: string;
   uuid: string;
   // CreateTime: number;
-}
+};
 
-export interface UserResponse {
+export type UserResponse = {
   username: string;
   nickname: string;
   email: string;
   avatar: string;
-}
+};
 
 // 文章相关的前端响应结构体
-export interface ArticleResponse {
+export type ArticleResponse = {
   articleId: number;
   title: string;
   content: string;
@@ -27,10 +27,10 @@ export interface ArticleResponse {
   likeCount: number;
   commentCount: number;
   commentTime: number;
-}
+};
 
 // 评论相关的前端响应结构体
-export interface CommentResponse {
+export type CommentResponse = {
   user: UserInfoData;
   entityType: string;
   entityId: number;
@@ -40,4 +40,4 @@ export interface CommentResponse {
   commentCount: number;
   createTime: number;
   liked: boolean;
-}
+};

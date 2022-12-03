@@ -1,11 +1,11 @@
 <template>
   <div class="userpage-container">
     <div class="top-bar-container">
-      <UserProfileTopBarVue></UserProfileTopBarVue>
+      <UserProfileTopBarVue :local-user="userinfo"></UserProfileTopBarVue>
     </div>
     <div class="main-item">
       <div class="left-side-bar">
-        <SideBarUserProfileVue></SideBarUserProfileVue>
+        <SideBarUserProfileVue :userinfo="userinfo"></SideBarUserProfileVue>
       </div>
       <div class="right-side-container">
         <el-menu
@@ -18,10 +18,12 @@
           <el-menu-item index="comment">评论</el-menu-item>
         </el-menu>
         <div v-if="isArticle === true">
-          <ArticlePreviewCardVue></ArticlePreviewCardVue>
+          <ArticlePreviewCardVue
+            :articles="articleInfo"
+          ></ArticlePreviewCardVue>
         </div>
         <div v-if="isArticle === false">
-          <CommentListVue></CommentListVue>
+          <CommentListVue :comments="commentInfo"></CommentListVue>
         </div>
       </div>
     </div>
@@ -33,7 +35,17 @@ import UserProfileTopBarVue from "@/components/UserProfileTopBar.vue";
 import SideBarUserProfileVue from "@/components/SideBarUserProfile.vue";
 import ArticlePreviewCardVue from "@/components/ArticlePreviewCard.vue";
 import CommentListVue from "@/components/CommentList.vue";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
+import { useRoute } from "vue-router";
+import { useUserStore } from "@/pinia/modules/user";
+import {
+  UserInfoData,
+  ArticleResponse,
+  CommentResponse,
+} from "@/model/response";
+import { getUserInfo } from "@/api/api_user";
+import { getUserArticles } from "@/api/api_article";
+import { getUserComments } from "@/api/api_comments";
 
 // interface UserPageStruct {
 //   userId: number,
@@ -42,8 +54,56 @@ import { ref } from "vue";
 // const props = defineProps({
 //   userId:
 // })
-
+const userStore = useUserStore();
+const route = useRoute();
 const isArticle = ref(true);
+const userinfo = ref<UserInfoData>();
+const articleInfo = ref<Array<ArticleResponse>>();
+const commentInfo = ref<Array<CommentResponse>>();
+
+const obtainUserInfo = async () => {
+  if (route.params.id != userStore.userInfo.id) {
+    console.log("当前用户浏览个人信息");
+    return userStore.userInfo;
+  } else {
+    const { data } = await getUserInfo(route.params.id as string);
+    if (data.code == 0) {
+      // console.log("user信息");
+      // console.log(data.data);
+      return data.data;
+    }
+  }
+};
+
+const obtainUserArticles = async () => {
+  const { data } = await getUserArticles(route.params.id as string);
+  if (data.code == 0) {
+    console.log("article信息");
+    console.log(data.data);
+    return data.data;
+  }
+};
+
+const obtainUserComments = async () => {
+  const { data } = await getUserComments(route.params.id as string);
+  if (data.code == 0) {
+    console.log("comments 信息");
+    console.log(data.data);
+    return data.data;
+  }
+};
+
+onMounted(async () => {
+  const uInfo = await obtainUserInfo();
+  const aInfo = await obtainUserArticles();
+  const cInfo = await obtainUserComments();
+  userinfo.value = uInfo as UserInfoData;
+  articleInfo.value = aInfo as Array<ArticleResponse>;
+  commentInfo.value = cInfo as Array<CommentResponse>;
+  console.log("mounted结果");
+  // console.log(userinfo.value);
+  console.log(articleInfo.value);
+});
 
 const handleSelect = (
   index: string,

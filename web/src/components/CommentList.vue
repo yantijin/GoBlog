@@ -22,7 +22,7 @@
           >
         </div>
         <div class="comment-time">
-          <time>{{ comment.createTime }}</time>
+          <time>{{ unix2Date(comment.createTime) }}</time>
         </div>
       </div>
 
@@ -53,6 +53,7 @@ import { RouterLink } from "vue-router";
 import { CaretTop, ChatDotRound } from "@element-plus/icons-vue";
 import Comment from "@/components/Comment.vue";
 import { ref } from "vue";
+import unix2Date from "@/utils/date";
 
 const reply = ref({
   commentId: 0,

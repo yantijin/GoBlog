@@ -11,8 +11,8 @@
             >{{ article.user.nickname }}</router-link
           >
         </span>
-        发布于
-        <time>{{ article.createTime }}</time>
+        发布于&nbsp;
+        <time>{{ unix2Date(article.createTime) }}</time>
       </div>
     </template>
     <div v-html="article.content" class="content"></div>
@@ -43,6 +43,7 @@ import { RouterLink } from "vue-router";
 import { Edit, CaretTop } from "@element-plus/icons-vue";
 import Comment from "@/components/Comment.vue";
 import { ref } from "vue";
+import unix2Date from "@/utils/date";
 
 const replyMain = ref(false);
 
@@ -54,24 +55,28 @@ const handleClick = () => {
   }
 };
 
-const article: ArticleResponse = {
-  articleId: 1,
-  title: "测试",
-  content: "<a href='https://whiteyan.top'>小白的个人博客</a>",
-  viewCount: 1,
-  createTime: 100,
-  user: {
-    id: 1,
-    nickname: "小白",
-    avatar: "",
-    email: "yantijin@163.com",
-    username: "yantijin",
-    uuid: "",
+const props = withDefaults(defineProps<{ article: ArticleResponse }>(), {
+  article: () => {
+    return {
+      articleId: 1,
+      title: "测试",
+      content: "<a href='https://whiteyan.top'>小白的个人博客</a>",
+      viewCount: 1,
+      createTime: 100,
+      user: {
+        id: 1,
+        nickname: "小白",
+        avatar: "",
+        email: "yantijin@163.com",
+        username: "yantijin",
+        uuid: "",
+      },
+      likeCount: 4,
+      commentCount: 10,
+      commentTime: 30,
+    };
   },
-  likeCount: 4,
-  commentCount: 10,
-  commentTime: 30,
-};
+});
 </script>
 
 <style>
