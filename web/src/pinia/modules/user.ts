@@ -34,6 +34,11 @@ export const useUserStore = defineStore("user", () => {
   //   isLogIn.value = val;
   // };
 
+  const resetInfo = () => {
+    userInfo.value = "";
+    token.value = "";
+  };
+
   watch(
     () => token.value,
     () => {
@@ -47,6 +52,7 @@ export const useUserStore = defineStore("user", () => {
     token,
     saveUserInfo,
     setToken,
+    resetInfo,
     // isLogIn,
     // setStatus,
   };

@@ -50,14 +50,14 @@ type UserInfo struct {
 }
 
 type UserRequest struct {
-	UserName string `json:"userName"`
+	UserName string `json:"username"`
 	NickName string `json:"nickname"`
 	Email    string `json:"email"`
 	Avatar   string `json:"avatar"`
 }
 
 type UserResponse struct {
-	UserName string    `json:"userName"`
+	UserName string    `json:"username"`
 	NickName string    `json:"nickname"`
 	Email    string    `json:"email"`
 	Avatar   string    `json:"avatar"`

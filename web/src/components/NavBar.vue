@@ -27,6 +27,10 @@
             <el-dropdown-item @click="router.push('/user/1')">
               个人中心</el-dropdown-item
             >
+            <el-dropdown-item @click="router.push('/user/edit')"
+              >编辑资料</el-dropdown-item
+            >
+            <el-dropdown-item @click="handleSingout">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
@@ -100,6 +104,13 @@ const userStore = useUserStore();
 // );
 
 const squareUrl = computed(() => userStore.userInfo.avatar);
+
+const handleSingout = () => {
+  window.localStorage.clear();
+  userStore.resetInfo();
+  console.log(window.localStorage);
+  // router.push("/home");
+};
 </script>
 
 <style>

@@ -1,21 +1,21 @@
 <template>
   <el-card class="article-view-card">
     <template #header>
-      <h2 id="title">{{ article.Title }}</h2>
+      <h2 id="title">{{ article.title }}</h2>
       <div class="article-view-meta">
         <span
           >由
           <router-link
-            :to="'/user/' + article.UserInfo.ID"
+            :to="'/user/' + article.user.id"
             class="article-author"
-            >{{ article.UserInfo.NickName }}</router-link
+            >{{ article.user.nickname }}</router-link
           >
         </span>
         发布于
-        <time>{{ article.CreateTime }}</time>
+        <time>{{ article.createTime }}</time>
       </div>
     </template>
-    <div v-html="article.Content" class="content"></div>
+    <div v-html="article.content" class="content"></div>
     <hr />
     <div class="end-actions">
       <el-button text @click="handleClick">
@@ -55,15 +55,22 @@ const handleClick = () => {
 };
 
 const article: ArticleResponse = {
-  ArticleId: 1,
-  Title: "测试",
-  Content: "<a href='https://whiteyan.top'>小白的个人博客</a>",
-  ViewCount: 1,
-  CreateTime: 100,
-  UserInfo: { ID: 1, NickName: "小白", Avatar: "", CreateTime: 0 },
-  LikeCount: 4,
-  CommentCount: 10,
-  CommnetTime: 30,
+  articleId: 1,
+  title: "测试",
+  content: "<a href='https://whiteyan.top'>小白的个人博客</a>",
+  viewCount: 1,
+  createTime: 100,
+  user: {
+    id: 1,
+    nickname: "小白",
+    avatar: "",
+    email: "yantijin@163.com",
+    username: "yantijin",
+    uuid: "",
+  },
+  likeCount: 4,
+  commentCount: 10,
+  commentTime: 30,
 };
 </script>
 

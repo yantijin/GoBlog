@@ -2,7 +2,7 @@
 <template>
   <div
     v-for="comment in props.comments"
-    :key="comment.CommentId"
+    :key="comment.commentId"
     class="comment"
   >
     <!-- <div class=""> -->
@@ -11,35 +11,35 @@
       <div class="comment-title">
         <div class="comment-item-left">
           <el-avatar
-            :src="comment.UserInfo.Avatar"
+            :src="comment.user.avatar"
             size="40"
             class="avatar"
           ></el-avatar>
         </div>
         <div class="comment-item-avatar">
-          <router-link :to="'/user/' + comment.UserInfo.ID" class="user-info">
-            {{ comment.UserInfo.NickName }}</router-link
+          <router-link :to="'/user/' + comment.user.id" class="user-info">
+            {{ comment.user.nickname }}</router-link
           >
         </div>
         <div class="comment-time">
-          <time>{{ comment.CreateTime }}</time>
+          <time>{{ comment.createTime }}</time>
         </div>
       </div>
 
       <div class="comment-content">
-        <div v-html="comment.Content"></div>
+        <div v-html="comment.content"></div>
       </div>
       <div class="comment-actions">
         <span>
-          <el-icon><CaretTop /></el-icon> &nbsp;{{ comment.LikeCount }}
+          <el-icon><CaretTop /></el-icon> &nbsp;{{ comment.likeCount }}
         </span>
         &nbsp;
         <span
           ><el-icon @click="switchReply(comment)"
             ><ChatDotRound /></el-icon></span
-        >&nbsp;{{ comment.CommentCount }}
+        >&nbsp;{{ comment.commentCount }}
       </div>
-      <div v-if="reply.commentId == comment.CommentId">
+      <div v-if="reply.commentId == comment.commentId">
         <Comment placeholder=""></Comment>
       </div>
     </el-card>
@@ -60,10 +60,10 @@ const reply = ref({
 });
 // const a: CommentResponse =
 const switchReply = (comment: CommentResponse) => {
-  if (reply.value.commentId == comment.CommentId) {
+  if (reply.value.commentId == comment.commentId) {
     (reply.value.commentId = 0), (reply.value.content = "");
   } else {
-    reply.value.commentId = comment.CommentId;
+    reply.value.commentId = comment.commentId;
   }
 };
 
@@ -74,37 +74,41 @@ const props = withDefaults(
   {
     comments: () => [
       {
-        CommentId: 5,
-        Content: "可以参考<a href='https://whiteyan.top'>小白的个人博客</a>",
-        EntityType: "article",
-        EntityId: 3,
-        LikeCount: 66,
-        CommentCount: 4,
-        CreateTime: 60,
-        Liked: false,
-        UserInfo: {
-          ID: 1,
-          NickName: "小白",
-          Avatar:
+        commentId: 5,
+        content: "可以参考<a href='https://whiteyan.top'>小白的个人博客</a>",
+        entityType: "article",
+        entityId: 3,
+        likeCount: 66,
+        commentCount: 4,
+        createTime: 60,
+        liked: false,
+        user: {
+          id: 1,
+          nickname: "小白",
+          avatar:
             "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png",
-          CreateTime: 2,
+          email: "yantijin@163.com",
+          username: "yantijin",
+          uuid: "",
         },
       },
       {
-        CommentId: 4,
-        Content: "可以参考<a href='https://whiteyan.top'>小白的个人博客</a>",
-        EntityType: "article",
-        EntityId: 3,
-        LikeCount: 66,
-        CommentCount: 4,
-        CreateTime: 60,
-        Liked: false,
-        UserInfo: {
-          ID: 1,
-          NickName: "小白",
-          Avatar:
+        commentId: 4,
+        content: "可以参考<a href='https://whiteyan.top'>小白的个人博客</a>",
+        entityType: "article",
+        entityId: 3,
+        likeCount: 66,
+        commentCount: 4,
+        createTime: 60,
+        liked: false,
+        user: {
+          id: 1,
+          nickname: "小白",
+          avatar:
             "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png",
-          CreateTime: 2,
+          email: "yantijin@163.com",
+          username: "yantijin",
+          uuid: "",
         },
       },
     ],

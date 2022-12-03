@@ -17,12 +17,12 @@
     <div class="profile-info">
       <div class="metas">
         <h1 class="nickname">
-          <router-link :to="'/user/' + localUser.ID" :key="localUser.ID">{{
-            localUser.NickName
+          <router-link :to="'/user/' + localUser.id" :key="localUser.id">{{
+            localUser.nickname
           }}</router-link>
         </h1>
-        <div v-if="localUser.NickName" class="description">
-          <p>{{ localUser.NickName }}</p>
+        <div v-if="localUser.nickname" class="description">
+          <p>{{ localUser.nickname }}</p>
         </div>
       </div>
       <div class="action-btns">
@@ -49,17 +49,21 @@ const backgroundImage = ref(defaultImg);
 const isOwner = ref(true);
 
 const localUser: UserInfoData = {
-  NickName: "小白",
-  ID: 3,
-  Avatar: "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png",
-  CreateTime: 100,
+  nickname: "小白",
+  id: 3,
+  avatar: "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png",
+  email: "yantijin@163.com",
+  username: "yantijin",
+  uuid: "",
 };
 
 const currentUser: UserInfoData = {
-  NickName: "小白",
-  ID: 3,
-  Avatar: "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png",
-  CreateTime: 100,
+  nickname: "小白",
+  id: 3,
+  avatar: "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png",
+  email: "yantijin@163.com",
+  username: "yantijin",
+  uuid: "",
 };
 // const followed = ref(false)
 </script>

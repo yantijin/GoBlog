@@ -131,8 +131,8 @@ const handleLogIn = async () => {
   }
   // 调用登录api
   const loginData: LogInUserData = {
-    UserName: params.username,
-    Password: params.password,
+    username: params.username,
+    password: params.password,
   };
   loadingIns.value = ElLoading.service({
     fullscreen: true,
@@ -188,11 +188,11 @@ const handleSignUp = async () => {
     return;
   }
   const signupData: RegisterUserData = {
-    UserName: params.username,
-    Password: params.password,
-    NickName: params.nickname,
-    Avatar: params.avatar,
-    Email: params.email,
+    username: params.username,
+    password: params.password,
+    nickname: params.nickname,
+    avatar: params.avatar,
+    email: params.email,
   };
   loadingIns.value = ElLoading.service({
     fullscreen: true,
@@ -203,8 +203,8 @@ const handleSignUp = async () => {
     if (data.code === 0) {
       // TODO: 请求成功，注册用户成功，应当给出信息，并跳转到登录后的界面
       const { data } = await login({
-        UserName: params.username,
-        Password: params.password,
+        username: params.username,
+        password: params.password,
       });
       ElMessage({
         message: "注册成功，即将跳转",

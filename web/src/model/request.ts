@@ -1,50 +1,50 @@
 // 用户相关的请求体内容
 export interface LogInUserData {
-  UserName: string;
-  Password: string;
+  username: string;
+  password: string;
 }
 
 export interface RegisterUserData {
-  UserName: string;
-  Password: string;
-  NickName: string;
-  Email: string;
-  Avatar: string;
+  username: string;
+  password: string;
+  nickname: string;
+  email: string;
+  avatar: string;
 }
 
 export interface ChangePwdData {
-  UserName: string;
-  Password: string;
+  username: string;
+  password: string;
   newPassword: string;
 }
 
 export interface SetUserInfoData {
-  UserName: string;
-  NickName: string;
-  Email: string;
-  Avatar: string;
+  username: string;
+  nickname: string;
+  email: string;
+  avatar: string;
 }
 
 // 文章相关的请求体内容
 export interface PublishArticleData {
-  UserId: number;
-  Title: string;
-  Content: string;
-  ContentType: string;
+  userId: number;
+  title: string;
+  content: string;
+  contentType: string;
 }
 
 export interface EditArticleData {
-  UserId: number;
-  ArticleId: number;
-  Title: string;
-  Content: string;
+  userId: number;
+  articleId: number;
+  title: string;
+  content: string;
 }
 
 // 评论相关的请求体内容
 export interface CommentData {
-  EntityType: string;
-  EntityId: number;
-  Content: string;
+  entityType: string;
+  entityId: number;
+  content: string;
 }
 
 export interface CommentBodyData {
