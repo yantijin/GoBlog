@@ -16,14 +16,15 @@ type Article struct {
 
 type Comments struct {
 	commen.GVA_MODEL
-	UserId          int64  `gorm:"index:comment_user_id" json:"userId"`                // 评论对应的用户ID
-	EntityType      string `gorm:"not null;default:article" json:"entityType"`         // 评论对应的主体：文章 / 用户评论
-	EntityId        int64  `gorm:"not null;index:comment_entity_id" json:"entityId"`   // 评论对应的主体的ID,如article ID/ comment ID
-	Content         string `gorm:"type:longtext;not null" json:"content"`              // 评论内容
-	LikeCount       int64  `gorm:"not null;default:0" json:"likeCount"`                // 评论点赞人数
-	CommentCount    int64  `gorm:"not null;default:0" json:"commentCount"`             // 评论的回复人数
-	LastCommentTime int64  `gorm:"index:idx_last_comment_time" json:"lastCommentTime"` // 评论最后被回复的时间
-	Status          int    `gorm:"index:status;default:1" json:"status"`               // 当前评论状态, 0:删除,1:正常
+	UserId          int64  `gorm:"index:comment_user_id" json:"userId"`                           // 评论对应的用户ID
+	EntityType      string `gorm:"not null;default:article" json:"entityType"`                    // 评论对应的主体：文章 / 用户评论
+	EntityId        int64  `gorm:"not null;index:comment_entity_id" json:"entityId"`              // 评论对应的主体的ID,如article ID/ comment ID
+	Content         string `gorm:"type:longtext;not null" json:"content"`                         // 评论内容
+	ContentType     string `gorm:"type:varchar(32);not null;default:markdown" json:"contentType"` // 内容类型：markdown还是html
+	LikeCount       int64  `gorm:"not null;default:0" json:"likeCount"`                           // 评论点赞人数
+	CommentCount    int64  `gorm:"not null;default:0" json:"commentCount"`                        // 评论的回复人数
+	LastCommentTime int64  `gorm:"index:idx_last_comment_time" json:"lastCommentTime"`            // 评论最后被回复的时间
+	Status          int    `gorm:"index:status;default:1" json:"status"`                          // 当前评论状态, 0:删除,1:正常
 }
 
 type UserLike struct {
@@ -47,7 +48,7 @@ type ArticleResponse struct {
 }
 
 type ArticleRequest struct {
-	UserId      int64  `josn:"userId"`
+	// UserId      int64  `josn:"userId"`
 	Title       string `json:"title"`
 	Content     string `json:"content"`
 	ContentType string `json:"contentType"`
@@ -75,9 +76,10 @@ type CommentResponse struct {
 }
 
 type CommentJson struct {
-	EntityType string `json:"entityType"`
-	EntityId   int64  `json:"entityId"`
-	Content    string `json:"content"`
+	EntityType  string `json:"entityType"`
+	EntityId    int64  `json:"entityId"`
+	Content     string `json:"content"`
+	ContentType string `json:"contentType"` // 内容类型：markdown还是html
 }
 
 type UserLikeRequest struct {

@@ -54,10 +54,15 @@ func (ac *ArticleController) PostPublishArticle(c *gin.Context) {
 		commen.GVA_LOG.Error("解析文章失败", zap.Error(err))
 		commen.FailedWithMsg("解析文章失败", c)
 	}
+	userId := utils.GetUserID(c)
+	if userId == 0 {
+		commen.FailedWithMsg("尚未登录或登录过期，请先登录", c)
+		return
+	}
 	// 下面就是将解析的内容绑定到model.Article上
 	now := time.Now()
 	article := model.Article{
-		UserId:          ar.UserId,
+		UserId:          userId,
 		Title:           ar.Title,
 		Content:         ar.Content,
 		ViewCount:       0,

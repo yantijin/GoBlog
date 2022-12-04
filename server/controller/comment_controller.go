@@ -15,25 +15,30 @@ import (
 
 type CommentController struct{}
 
-// 获取comments，这里是登录状态，才能保证返回前端的是对应的点赞数据
+// 获取comments
 func (cc *CommentController) PostGetComments(c *gin.Context) {
-	userId := utils.GetUserID(c)
-	currentUser, err := service.AllServiceApp.FindUser(commen.GVA_DB, userId)
-	if err != nil {
-		commen.GVA_LOG.Error("获取当前用户信息失败", zap.Error(err))
-		commen.FailedWithMsg(err.Error(), c)
-		return
-	}
 	var cj model.CommentJson
-	err = c.ShouldBindJSON(&cj)
+	err := c.ShouldBindJSON(&cj)
 	if err != nil {
 		commen.GVA_LOG.Error("绑定结构体失败，请检查", zap.Error(err))
 		commen.FailedWithMsg(err.Error(), c)
 		return
 	}
-	// }
-	// 调用commentService中GetComments的服务
 	comments := service.AllServiceApp.GetComments(commen.GVA_DB, cj.EntityType, cj.EntityId)
+	userId := utils.GetUserID(c)
+	currentUser := &model.User{
+		UserName: "",
+	}
+	// userId=0 => 用户没有登录
+	if userId != 0 {
+		currentUser, err = service.AllServiceApp.FindUser(commen.GVA_DB, userId)
+		if err != nil {
+			commen.GVA_LOG.Error("获取当前用户信息失败", zap.Error(err))
+			commen.FailedWithMsg(err.Error(), c)
+			return
+		}
+	}
+
 	commentResp := render.BuildComments(comments, currentUser)
 	commen.OkWithDetailed(commentResp, "获取评论成功", c)
 }
@@ -53,6 +58,7 @@ func (cc *CommentController) PostCreateComment(c *gin.Context) {
 		EntityType:      cj.EntityType,
 		EntityId:        cj.EntityId,
 		Content:         cj.Content,
+		ContentType:     cj.ContentType,
 		LikeCount:       0,
 		CommentCount:    0,
 		LastCommentTime: time.Now().Unix(),
@@ -78,13 +84,6 @@ func (cc *CommentController) PostCreateComment(c *gin.Context) {
 
 // 获取某个用户的Comment
 func (cc *CommentController) GetUserComments(c *gin.Context) {
-	cUserId := utils.GetUserID(c)
-	currentUser, err := service.AllServiceApp.FindUser(commen.GVA_DB, cUserId)
-	if err != nil {
-		commen.GVA_LOG.Error("解析用户出错", zap.Error(err))
-		commen.FailedWithMsg(err.Error(), c)
-		return
-	}
 	userId, ok := c.GetQuery("id")
 	if !ok {
 		commen.GVA_LOG.Error("没有userId字段或网络错误,请检查")
@@ -96,6 +95,19 @@ func (cc *CommentController) GetUserComments(c *gin.Context) {
 		commen.GVA_LOG.Error("userId应该为数字,请检查")
 		commen.FailedWithMsg("userId应该为数字,请检查", c)
 		return
+	}
+
+	cUserId := utils.GetUserID(c)
+	currentUser := &model.User{
+		UserName: "",
+	}
+	if cUserId != 0 {
+		currentUser, err = service.AllServiceApp.FindUser(commen.GVA_DB, cUserId)
+		if err != nil {
+			commen.GVA_LOG.Error("解析用户出错", zap.Error(err))
+			commen.FailedWithMsg(err.Error(), c)
+			return
+		}
 	}
 	// 调用查找服务
 	comments := service.AllServiceApp.GetUserComments(commen.GVA_DB, uid)
