@@ -6,6 +6,7 @@
         placeholder="请输入评论内容"
         theme="classic"
         height="auto"
+        ref="MdEditorMethod"
       ></MdEditorVue>
     </div>
     <div class="btn">
@@ -16,7 +17,13 @@
 
 <script setup lang="ts">
 import MdEditorVue from "@/components/MdEditor.vue";
+import { createComment } from "@/api/api_comments";
+import { ref } from "vue";
+import { useRouter, useRoute } from "vue-router";
 
+const router = useRouter();
+const route = useRoute();
+const MdEditorMethod = ref<null | InstanceType<typeof MdEditorVue>>(null);
 interface commentProps {
   entityType: string;
   entityId: number;
@@ -27,8 +34,19 @@ const props = withDefaults(defineProps<commentProps>(), {
   entityId: 0,
 });
 
-const submitComment = () => {
-  console.log("hhh");
+const submitComment = async () => {
+  const { data } = await createComment({
+    entityId: props.entityId,
+    entityType: props.entityType,
+    contentType: "markdown",
+    content: MdEditorMethod.value?.getValue() as string,
+  });
+  if (data.code == 0) {
+    console.log("提交评论成功");
+    console.log(data.data);
+    // router.replace("/article/" + route.params.id);
+    router.go(0);
+  }
 };
 </script>
 

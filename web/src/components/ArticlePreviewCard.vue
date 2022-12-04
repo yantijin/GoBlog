@@ -57,55 +57,55 @@ import unix2Date from "@/utils/date";
 // interface articlesProps {
 //   articles: any[];
 // }
-// const props = defineProps<{
-//   articles: ArticleResponse[];
-// }>();
-const props = withDefaults(
-  defineProps<{ articles: Array<ArticleResponse> }>(),
-  {
-    // articles: () => [] as any[],
-    articles: () => {
-      return [
-        {
-          articleId: 1,
-          title: "这是测试的第一个文章标题",
-          content: "测试1",
-          viewCount: 1,
-          createTime: 100,
-          user: {
-            id: 1,
-            nickname: "小白",
-            avatar: "",
-            email: "yantijn@163.com",
-            username: "yantijin",
-            uuid: "",
-          },
-          likeCount: 4,
-          commentCount: 10,
-          commentTime: 30,
-        },
-        {
-          articleId: 2,
-          title: "这是测试的第二个文章标题",
-          content: "测试2",
-          viewCount: 1,
-          createTime: 100,
-          user: {
-            id: 1,
-            nickname: "小白",
-            avatar: "",
-            email: "yantijn@163.com",
-            username: "yantijin",
-            uuid: "",
-          },
-          likeCount: 4,
-          commentCount: 10,
-          commentTime: 30,
-        },
-      ];
-    },
-  }
-);
+const props = defineProps<{
+  articles: ArticleResponse[];
+}>();
+// const props = withDefaults(
+//   defineProps<{ articles: Array<ArticleResponse> }>(),
+//   {
+//     // articles: () => [] as any[],
+//     articles: () => {
+//       return [
+//         {
+//           articleId: 1,
+//           title: "这是测试的第一个文章标题",
+//           content: "测试1",
+//           viewCount: 1,
+//           createTime: 100,
+//           user: {
+//             id: 1,
+//             nickname: "小白",
+//             avatar: "",
+//             email: "yantijn@163.com",
+//             username: "yantijin",
+//             uuid: "",
+//           },
+//           likeCount: 4,
+//           commentCount: 10,
+//           commentTime: 30,
+//         },
+//         {
+//           articleId: 2,
+//           title: "这是测试的第二个文章标题",
+//           content: "测试2",
+//           viewCount: 1,
+//           createTime: 100,
+//           user: {
+//             id: 1,
+//             nickname: "小白",
+//             avatar: "",
+//             email: "yantijn@163.com",
+//             username: "yantijin",
+//             uuid: "",
+//           },
+//           likeCount: 4,
+//           commentCount: 10,
+//           commentTime: 30,
+//         },
+//       ];
+//     },
+//   }
+// );
 
 const format = computed(val => {
   return (val: any) => {

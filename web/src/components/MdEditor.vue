@@ -9,7 +9,7 @@ import "vditor/dist/index.css";
 
 // 可以参考 https://blog.csdn.net/lmy_loveF/article/details/125317648 进行配置
 
-interface MdProps {
+type MdProps = {
   value: string;
   height: number | string;
   width: string | number;
@@ -18,7 +18,7 @@ interface MdProps {
   isHideTools: boolean;
   theme: "dark" | "classic";
   placeholder: string;
-}
+};
 
 const props = withDefaults(defineProps<MdProps>(), {
   value: "", // 默认填充的值

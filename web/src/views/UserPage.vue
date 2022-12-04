@@ -19,11 +19,15 @@
         </el-menu>
         <div v-if="isArticle === true">
           <ArticlePreviewCardVue
-            :articles="articleInfo"
+            v-if="flag"
+            :articles="articleInfo as ArticleResponse[]"
           ></ArticlePreviewCardVue>
         </div>
         <div v-if="isArticle === false">
-          <CommentListVue :comments="commentInfo"></CommentListVue>
+          <CommentListVue
+            v-if="flag"
+            :comments="commentInfo as CommentResponse[]"
+          ></CommentListVue>
         </div>
       </div>
     </div>
@@ -60,6 +64,7 @@ const isArticle = ref(true);
 const userinfo = ref<UserInfoData>();
 const articleInfo = ref<Array<ArticleResponse>>();
 const commentInfo = ref<Array<CommentResponse>>();
+const flag = ref(false);
 
 const obtainUserInfo = async () => {
   if (route.params.id != userStore.userInfo.id) {
@@ -78,8 +83,8 @@ const obtainUserInfo = async () => {
 const obtainUserArticles = async () => {
   const { data } = await getUserArticles(route.params.id as string);
   if (data.code == 0) {
-    console.log("article信息");
-    console.log(data.data);
+    // console.log("article信息");
+    // console.log(data.data);
     return data.data;
   }
 };
@@ -87,8 +92,8 @@ const obtainUserArticles = async () => {
 const obtainUserComments = async () => {
   const { data } = await getUserComments(route.params.id as string);
   if (data.code == 0) {
-    console.log("comments 信息");
-    console.log(data.data);
+    // console.log("comments 信息");
+    // console.log(data.data);
     return data.data;
   }
 };
@@ -100,9 +105,10 @@ onMounted(async () => {
   userinfo.value = uInfo as UserInfoData;
   articleInfo.value = aInfo as Array<ArticleResponse>;
   commentInfo.value = cInfo as Array<CommentResponse>;
-  console.log("mounted结果");
+  flag.value = true;
+  // console.log("mounted结果");
   // console.log(userinfo.value);
-  console.log(articleInfo.value);
+  // console.log(articleInfo.value);
 });
 
 const handleSelect = (

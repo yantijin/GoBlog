@@ -4,7 +4,7 @@
     :style="{ backgroundImage: 'url(' + backgroundImage + ')' }"
   >
     <div v-if="isOwner" class="file is-light is-small change-bg">
-      <el-upload accept=".jpg,.png,.jpeg" show-file-list="false">
+      <el-upload accept=".jpg,.png,.jpeg" :show-file-list="false">
         <el-button text :icon="Upload" bg>设置背景</el-button>
       </el-upload>
     </div>

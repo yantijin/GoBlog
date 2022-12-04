@@ -12,7 +12,7 @@
         <div class="comment-item-left">
           <el-avatar
             :src="comment.user.avatar"
-            size="40"
+            size="small"
             class="avatar"
           ></el-avatar>
         </div>
@@ -67,54 +67,54 @@ const switchReply = (comment: CommentResponse) => {
     reply.value.commentId = comment.commentId;
   }
 };
-
-const props = withDefaults(
-  defineProps<{
-    comments: CommentResponse[];
-  }>(),
-  {
-    comments: () => [
-      {
-        commentId: 5,
-        content: "可以参考<a href='https://whiteyan.top'>小白的个人博客</a>",
-        entityType: "article",
-        entityId: 3,
-        likeCount: 66,
-        commentCount: 4,
-        createTime: 60,
-        liked: false,
-        user: {
-          id: 1,
-          nickname: "小白",
-          avatar:
-            "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png",
-          email: "yantijin@163.com",
-          username: "yantijin",
-          uuid: "",
-        },
-      },
-      {
-        commentId: 4,
-        content: "可以参考<a href='https://whiteyan.top'>小白的个人博客</a>",
-        entityType: "article",
-        entityId: 3,
-        likeCount: 66,
-        commentCount: 4,
-        createTime: 60,
-        liked: false,
-        user: {
-          id: 1,
-          nickname: "小白",
-          avatar:
-            "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png",
-          email: "yantijin@163.com",
-          username: "yantijin",
-          uuid: "",
-        },
-      },
-    ],
-  }
-);
+const props = defineProps<{ comments: CommentResponse[] }>();
+// const props = withDefaults(
+//   defineProps<{
+//     comments: CommentResponse[];
+//   }>(),
+//   {
+//     comments: () => [
+//       {
+//         commentId: 5,
+//         content: "可以参考<a href='https://whiteyan.top'>小白的个人博客</a>",
+//         entityType: "article",
+//         entityId: 3,
+//         likeCount: 66,
+//         commentCount: 4,
+//         createTime: 60,
+//         liked: false,
+//         user: {
+//           id: 1,
+//           nickname: "小白",
+//           avatar:
+//             "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png",
+//           email: "yantijin@163.com",
+//           username: "yantijin",
+//           uuid: "",
+//         },
+//       },
+//       {
+//         commentId: 4,
+//         content: "可以参考<a href='https://whiteyan.top'>小白的个人博客</a>",
+//         entityType: "article",
+//         entityId: 3,
+//         likeCount: 66,
+//         commentCount: 4,
+//         createTime: 60,
+//         liked: false,
+//         user: {
+//           id: 1,
+//           nickname: "小白",
+//           avatar:
+//             "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png",
+//           email: "yantijin@163.com",
+//           username: "yantijin",
+//           uuid: "",
+//         },
+//       },
+//     ],
+//   }
+// );
 </script>
 
 <style>

@@ -15,7 +15,11 @@
         <time>{{ unix2Date(article.createTime) }}</time>
       </div>
     </template>
-    <div v-html="article.content" class="content"></div>
+    <ViewContentVue
+      :md="article.content"
+      mode="light"
+      st="github"
+    ></ViewContentVue>
     <hr />
     <div class="end-actions">
       <el-button text @click="handleClick">
@@ -29,21 +33,22 @@
     </div>
   </el-card>
   <div v-if="replyMain">
-    <Comment placeholder=""></Comment>
+    <Comment
+      placeholder=""
+      entity-type="article"
+      :entity-id="article.articleId"
+    ></Comment>
   </div>
 </template>
 
 <script lang="ts" setup>
-// const article = async() => {
-//   await
-// }
-
 import { ArticleResponse } from "@/model/response";
 import { RouterLink } from "vue-router";
 import { Edit, CaretTop } from "@element-plus/icons-vue";
 import Comment from "@/components/Comment.vue";
 import { ref } from "vue";
 import unix2Date from "@/utils/date";
+import ViewContentVue from "./ViewContent.vue";
 
 const replyMain = ref(false);
 
@@ -60,7 +65,7 @@ const props = withDefaults(defineProps<{ article: ArticleResponse }>(), {
     return {
       articleId: 1,
       title: "测试",
-      content: "<a href='https://whiteyan.top'>小白的个人博客</a>",
+      content: "",
       viewCount: 1,
       createTime: 100,
       user: {

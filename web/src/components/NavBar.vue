@@ -19,6 +19,7 @@
       <el-sub-menu index="publish">
         <template #title>发表</template>
         <el-menu-item index="publishArticle">发文章</el-menu-item>
+        <el-menu-item index="test">文章内容组件测试</el-menu-item>
       </el-sub-menu>
       <el-dropdown v-if="userStore.userInfo != ''" id="dp">
         <div class="avatar">
@@ -84,6 +85,8 @@ const handleSelect = (
     router.push("/home");
   } else if (index === "publishArticle") {
     router.push("/article/create");
+  } else if (index == "test") {
+    router.push("/test");
   }
 };
 

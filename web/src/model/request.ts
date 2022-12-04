@@ -27,7 +27,6 @@ export type SetUserInfoData = {
 
 // 文章相关的请求体内容
 export type PublishArticleData = {
-  userId: number;
   title: string;
   content: string;
   contentType: string;
@@ -45,6 +44,7 @@ export type CommentData = {
   entityType: string;
   entityId: number;
   content: string;
+  contentType: string;
 };
 
 export type CommentBodyData = {

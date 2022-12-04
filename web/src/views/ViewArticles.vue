@@ -1,13 +1,19 @@
 <template>
   <div class="view-article-container">
     <div class="article">
-      <ArticleViewCardVue :article="article"></ArticleViewCardVue>
+      <ArticleViewCardVue
+        v-if="flag"
+        :article="article as ArticleResponse"
+      ></ArticleViewCardVue>
     </div>
     <!-- <div class="input-comment">
       <CommentVue></CommentVue>
     </div> -->
     <div class="comment-list">
-      <CommentListVue :comments="comments"></CommentListVue>
+      <CommentListVue
+        v-if="flag"
+        :comments="comments as CommentResponse[]"
+      ></CommentListVue>
     </div>
   </div>
 </template>
@@ -25,13 +31,15 @@ import { useRoute } from "vue-router";
 const route = useRoute();
 const article = ref<ArticleResponse>();
 const comments = ref<Array<CommentResponse>>();
+const flag = ref(false);
 
 const obtainArticleDetail = async () => {
   const { data } = await getArticle(route.params.id as string);
   if (data.code == 0) {
-    console.log("获取文章成功");
-    console.log(data.data);
+    // console.log("获取文章成功");
+    // console.log(data.data);
     article.value = data.data;
+    // console.log(article.value?.content);
   }
 };
 
@@ -41,8 +49,8 @@ const obtainArticleComments = async () => {
     entityId: +route.params.id,
   });
   if (data.code == 0) {
-    console.log("获取文章评论成功");
-    console.log(data.data);
+    // console.log("获取文章评论成功");
+    // console.log(data.data);
     comments.value = data.data;
   }
 };
@@ -50,6 +58,7 @@ const obtainArticleComments = async () => {
 onMounted(async () => {
   await obtainArticleDetail();
   await obtainArticleComments();
+  flag.value = true;
 });
 </script>
 
