@@ -1,4 +1,6 @@
-# GoLog
+# GoBlog
+
+> 基于golang和vue的前后端分离的博客系统，持续开发ing.....
 
 ## 主要技术栈
 
@@ -21,7 +23,7 @@
 * :white_check_mark: Vue-Router 前端路由
 * :white_check_mark: Pinia 状态管理器
 * :white_check_mark: Mitt 事件触发器
-* :white_check_mark: vditor markdown编辑器
+* :white_check_mark: vditor markdown 编辑器/渲染
 
 ## 主要功能
 
